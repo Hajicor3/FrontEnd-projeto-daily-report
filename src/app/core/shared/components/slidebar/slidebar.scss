@@ -8,10 +8,34 @@
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
 
 .app-name {
   font-size: 1.5rem;
   font-weight: bold;
   margin-left: 10px;
+  font-weight: bold;
+}
+
+.slidebar-menu {
+  list-style: none;
+  width: 90%;
+
+}
+
+.slidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  padding: 14px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #667eea;
+  }
 }
