@@ -1,0 +1,35 @@
+<div class="content-grid">
+  <div>
+    <div class="card-header">
+      <div>
+        <div class="card-header-title">
+          <span>Atividades de hoje</span>
+        </div>
+        <div class="card-header-subtitle">
+          <span>data de hoje</span>
+        </div>
+      </div>
+      <div>
+        <div style="text-align: right;">
+          <div class="card-header-total">5h</div>
+          <div class="card-header-label">TOTAL DO DIA</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <ul class="activity-list">
+        <li class="activity-item" *ngFor="let item of atividades">
+          <div class="activity-item-time">
+          {{ item.horaInicio | date:'HH:mm' }} - {{ item.horaFim | date:'HH:mm' }}
+        </div>
+        <div class="activity-item-details">
+          <div class="activity-item-title">{{ item.titulo }}</div>
+          <div class="activity-item-company">{{ item.empresaNome }}</div>
+        </div>
+        <div class="activity-item-duration">{{ item.minutosTrabalhados }} min</div>
+      </li>
+      </ul>
+       <a class="view-all-link" href="#">Ver todas as atividades →</a>
+    </div>
+  </div>
+</div>
