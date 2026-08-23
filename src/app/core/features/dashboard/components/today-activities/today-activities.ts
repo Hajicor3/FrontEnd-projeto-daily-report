@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import { Atividade } from '../../../atividade/models/atividade';
+import { Atividade } from '../../../atividade/models/atividade.model';
 import { CategoriaAtividade } from '../../../atividade/models/categoria-atividade.enum';
+import { ChartHours } from "../chart-hours/chart-hours";
 
 @Component({
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, ChartHours],
   selector: 'app-today-activities',
   styleUrl: './today-activities.scss',
   templateUrl: './today-activities.html',
