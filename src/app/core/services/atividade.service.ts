@@ -150,4 +150,8 @@ export class AtividadeService {
   criarAtividade(request: AtividadeRequest): void {
     console.log('criarAtividade chamado com:', request);
   }
+
+  buscarAtividadePorId(id: number): Atividade | undefined {
+    return this.buscarAtividades().find(a => a.id === id);
+  }
 }
