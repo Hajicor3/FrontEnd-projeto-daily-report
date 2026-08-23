@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ import { EmpresaModel } from '../../models/empresa.model';
 export class EmpresasList implements OnInit {
   empresaService: EmpresaService;
 
-  empresas: EmpresaModel[] = [];
+  empresas = signal<EmpresaModel[]>([]);
 
   termoBusca: string = '';
 
@@ -28,14 +28,14 @@ export class EmpresasList implements OnInit {
 
   loadEmpresas() {
     this.empresaService.buscarEmpresas().subscribe(response => {
-      this.empresas = response;
+      this.empresas.set(response);
     });
   }
 
   get empresasFiltradas(): EmpresaModel[] {
     const termo = this.termoBusca.toLowerCase().trim();
 
-    return this.empresas
+    return this.empresas()
       .filter(e => e.nome.toLowerCase().includes(termo))
       .sort((a, b) => a.nome.localeCompare(b.nome as string));
   }

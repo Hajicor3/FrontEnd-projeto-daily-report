@@ -71,11 +71,11 @@
           </td>
           <td>{{ item.empresaNome }}</td>
           <td>
-            <span class="badge" [ngClass]="corDaCategoria(item.categoriaAtividade)">
-              {{ item.categoriaAtividade }}
+            <span class="badge" [ngClass]="corDaCategoria(item.categoria)">
+              {{ item.categoria }}
             </span>
           </td>
-          <td>{{ item.horaInicio | date:'HH:mm' }} - {{ item.horaFim | date:'HH:mm' }}</td>
+          <td>{{ item.horaInicio | slice:0:5 }} - {{ item.horaFim | slice:0:5 }}</td>
           <td>{{ item.minutosTrabalhados }} min</td>
         </tr>
       </tbody>

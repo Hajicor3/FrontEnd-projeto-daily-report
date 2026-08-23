@@ -7,7 +7,7 @@
     <a class="btn-secondary" routerLink="/empresas">← Voltar</a>
   </div>
 
-  <div class="detail-card" *ngIf="empresa; else naoEncontrada">
+  <div class="detail-card" *ngIf="empresa() as empresa; else naoEncontrada">
     <div class="detail-header">
       <h2>{{ empresa.nome }}</h2>
       <a class="btn btn-primary" [routerLink]="['/empresa', empresa.id, 'editar']">

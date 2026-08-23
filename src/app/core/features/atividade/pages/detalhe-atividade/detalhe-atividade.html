@@ -7,11 +7,11 @@
     <a class="btn-secondary" routerLink="/atividades">← Voltar</a>
   </div>
 
-  <div class="detail-card" *ngIf="atividade; else naoEncontrada">
+  <div class="detail-card" *ngIf="atividade() as atividade; else naoEncontrada">
     <div class="detail-header">
       <div>
-        <span class="badge" [ngClass]="corDaCategoria(atividade.categoriaAtividade)">
-          {{ atividade.categoriaAtividade }}
+        <span class="badge" [ngClass]="corDaCategoria(atividade.categoria)">
+          {{ atividade.categoria }}
         </span>
         <h2>{{ atividade.titulo }}</h2>
       </div>
@@ -39,7 +39,7 @@
 
       <div class="detail-field">
         <span class="detail-label">Horário</span>
-        <span class="detail-value">{{ atividade.horaInicio | date:'HH:mm' }} - {{ atividade.horaFim | date:'HH:mm' }}</span>
+        <span class="detail-value">{{ atividade.horaInicio | slice:0:5 }} - {{ atividade.horaFim | slice:0:5 }}</span>
       </div>
 
       <div class="detail-field">

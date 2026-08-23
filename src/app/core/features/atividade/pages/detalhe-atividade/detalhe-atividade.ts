@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AtividadeService } from '../../../../services/atividade.service';
@@ -15,7 +15,7 @@ export class DetalheAtividade implements OnInit {
   atividadeService: AtividadeService;
   route: ActivatedRoute;
 
-  atividade: Atividade | undefined;
+  atividade = signal<Atividade | undefined>(undefined);
 
   constructor(atividadeService: AtividadeService, route: ActivatedRoute) {
     this.atividadeService = atividadeService;
@@ -29,7 +29,7 @@ export class DetalheAtividade implements OnInit {
 
   loadAtividadeData(id: number) {
     this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
-      this.atividade = atividade;
+      this.atividade.set(atividade);
     });
   }
 

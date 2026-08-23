@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { Atividade } from '../../../atividade/models/atividade.model';
@@ -7,15 +7,12 @@ import { EmpresaModel } from '../../../empresas/models/empresa.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [CommonModule, DatePipe, ChartHours, RouterLink],
+  imports: [CommonModule, ChartHours, RouterLink],
   selector: 'app-today-activities',
   styleUrl: './today-activities.scss',
   templateUrl: './today-activities.html',
 })
 export class TodayActivities {
-  @Input()
-  atividades: Atividade[] = [];
-
-  @Input()
-  empresas: EmpresaModel[] = [];
+  atividades = input<Atividade[]>([]);
+  empresas = input<EmpresaModel[]>([]);
 }

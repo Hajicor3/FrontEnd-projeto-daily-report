@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -21,7 +21,7 @@ export class AtividadeForm implements OnInit {
   route: ActivatedRoute;
   router: Router;
 
-  empresas: EmpresaModel[] = [];
+  empresas = signal<EmpresaModel[]>([]);
   categorias = Object.values(CategoriaAtividade);
 
   atividadeId: number | null = null;
@@ -64,7 +64,7 @@ export class AtividadeForm implements OnInit {
 
   loadEmpresas() {
     this.empresaService.buscarEmpresas().subscribe(response => {
-      this.empresas = response;
+      this.empresas.set(response);
     });
   }
 
@@ -80,7 +80,7 @@ export class AtividadeForm implements OnInit {
     this.form.patchValue({
       titulo: atividade.titulo,
       data: this.formatarData(atividade.data),
-      categoria: atividade.categoriaAtividade,
+      categoria: atividade.categoria,
       empresaId: atividade.empresaId,
       projeto: atividade.projeto,
       horaInicio: this.formatarHora(atividade.horaInicio),
@@ -90,17 +90,20 @@ export class AtividadeForm implements OnInit {
     });
   }
 
-  private formatarData(data: Date): string {
-    const ano = data.getFullYear();
-    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
-    const dia = data.getDate().toString().padStart(2, '0');
-    return `${ano}-${mes}-${dia}`;
+  private formatarData(data: string): string {
+    // "data" já vem do backend como yyyy-MM-dd, que é o formato que o
+    // input type="date" espera. Não passamos por `new Date(...)` aqui: uma
+    // string de data "pura" (sem hora) é interpretada como meia-noite UTC, e
+    // reformatar com getFullYear/getMonth/getDate (que leem no horário local)
+    // pode voltar um dia a menos em fusos atrás do UTC.
+    return data.slice(0, 10);
   }
 
-  private formatarHora(hora: Date): string {
-    const h = hora.getHours().toString().padStart(2, '0');
-    const m = hora.getMinutes().toString().padStart(2, '0');
-    return `${h}:${m}`;
+  private formatarHora(hora: string): string {
+    // "hora" vem como HH:mm:ss, sem nenhuma data junto — não dá pra montar um
+    // Date válido só com isso. Como só precisamos do HH:mm pro input
+    // type="time", um corte de string resolve sem esse problema.
+    return hora.slice(0, 5);
   }
 
   campoInvalido(nome: string): boolean {

@@ -23,6 +23,6 @@ export class EmpresaService {
   }
 
   atualizarEmpresa(id: number, request: EmpresaRequest): Observable<EmpresaModel>  {
-    return this.http.post<EmpresaModel>(`${this.apiUrl}/${id}`, request);
+    return this.http.put<EmpresaModel>(`${this.apiUrl}/${id}`, request);
   }
 }

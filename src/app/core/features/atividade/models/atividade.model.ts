@@ -2,35 +2,35 @@ import { CategoriaAtividade } from "./categoria-atividade.enum";
 
 export class Atividade {
   id: number;
-  data: Date;
+  data: string;
   titulo: string;
   descricao: string;
   empresaId: number;
   empresaNome: string;
   projeto: string;
-  categoriaAtividade: CategoriaAtividade;
-  horaInicio: Date;
-  horaFim: Date
+  categoria: CategoriaAtividade;
+  horaInicio: string;
+  horaFim: string;
   minutosTrabalhados: number;
   observacao: string;
-  criadoEm: Date;
-  atualizadoEm: Date;
+  criadoEm: string;
+  atualizadoEm: string;
 
   constructor(
     id: number,
-    data: Date,
+    data: string,
     titulo: string,
     descricao: string,
     empresaId: number,
     empresaNome: string,
     projeto: string,
-    categoriaAtividade: CategoriaAtividade,
-    horaInicio: Date,
-    horaFim: Date,
+    categoria: CategoriaAtividade,
+    horaInicio: string,
+    horaFim: string,
     minutosTrabalhados: number,
     observacao: string,
-    criadoEm: Date,
-    atualizadoEm: Date
+    criadoEm: string,
+    atualizadoEm: string
   ) {
     this.id = id;
     this.data = data;
@@ -39,7 +39,7 @@ export class Atividade {
     this.empresaId = empresaId;
     this.empresaNome = empresaNome;
     this.projeto = projeto;
-    this.categoriaAtividade = categoriaAtividade;
+    this.categoria = categoria;
     this.horaInicio = horaInicio;
     this.horaFim = horaFim;
     this.minutosTrabalhados = minutosTrabalhados;

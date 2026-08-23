@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { EmpresaService } from '../../../../services/empresa.service';
@@ -15,7 +15,7 @@ export class DetalheEmpresas implements OnInit {
   empresaService: EmpresaService;
   route: ActivatedRoute;
 
-  empresa: EmpresaModel | undefined;
+  empresa = signal<EmpresaModel | undefined>(undefined);
 
   constructor(empresaService: EmpresaService, route: ActivatedRoute) {
     this.empresaService = empresaService;
@@ -29,7 +29,7 @@ export class DetalheEmpresas implements OnInit {
 
   loadEmpresaData(id: number) {
     this.empresaService.buscarEmpresaPorId(id).subscribe(response => {
-      this.empresa = response;
+      this.empresa.set(response);
     })
   }
 }

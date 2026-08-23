@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,7 +15,7 @@ import { CategoriaAtividade } from '../../models/categoria-atividade.enum';
 export class AtividadeList implements OnInit {
   atividadeService: AtividadeService;
 
-  atividades: Atividade[] = [];
+  atividades = signal<Atividade[]>([]);
 
   termoBusca: string = '';
   filtroMes: string = '';
@@ -34,21 +34,23 @@ export class AtividadeList implements OnInit {
 
   loadAtividades() {
     this.atividadeService.buscarAtividades().subscribe(atividades => {
-      this.atividades = atividades;
+      this.atividades.set(atividades);
     })
   }
 
   get atividadesFiltradas(): Atividade[] {
     const termo = this.termoBusca.toLowerCase().trim();
+    // "data" é uma string yyyy-MM-dd. Comparamos por pedaços de string em vez
+    // de passar por `new Date(...)`, pra não cair no mesmo problema de fuso
+    // horário: string ISO nesse formato já compara e ordena certinho como
+    // texto, sem ambiguidade nenhuma.
     const temFiltroData = this.filtroMes.length === 2 && this.filtroAno.length === 4;
-    const mesFiltro = Number(this.filtroMes);
-    const anoFiltro = Number(this.filtroAno);
 
-    return this.atividades
-      .filter(a => this.categoriaSelecionada === 'TODAS' || a.categoriaAtividade === this.categoriaSelecionada)
+    return this.atividades()
+      .filter(a => this.categoriaSelecionada === 'TODAS' || a.categoria === this.categoriaSelecionada)
       .filter(a => a.titulo.toLowerCase().includes(termo))
-      .filter(a => !temFiltroData || (a.data.getMonth() + 1 === mesFiltro && a.data.getFullYear() === anoFiltro))
-      .sort((a, b) => b.data.getTime() - a.data.getTime());
+      .filter(a => !temFiltroData || (a.data.slice(5, 7) === this.filtroMes && a.data.slice(0, 4) === this.filtroAno))
+      .sort((a, b) => b.data.localeCompare(a.data));
   }
 
   corDaCategoria(categoria: CategoriaAtividade): string {
