@@ -18,6 +18,13 @@ export const routes: Routes = [
         m => m.AtividadeList
       ),
   },
+  {
+    path: 'empresas',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/empresas-list/empresas-list').then(
+        m => m.EmpresasList
+      ),
+  },
 
   {
     path: 'atividade/novo',
