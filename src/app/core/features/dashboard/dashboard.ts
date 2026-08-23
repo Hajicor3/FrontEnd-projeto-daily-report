@@ -6,9 +6,10 @@ import { StatsCard } from "./components/stats-card/stats-card";
 import { TodayActivities } from "./components/today-activities/today-activities";
 import { EmpresaModel } from "./../empresas/models/empresa.model";
 import { EmpresaService } from '../../services/empresa.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
-  imports: [StatsCard, TodayActivities],
+  imports: [StatsCard, TodayActivities, RouterLink],
   selector: 'app-dashboard',
   styleUrl: './dashboard.scss',
   templateUrl: './dashboard.html',
