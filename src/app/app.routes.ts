@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './core/features/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -9,6 +8,21 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadComponent: () => import('./core/features/dashboard/dashboard').then(m => Dashboard),
+    loadComponent: () =>
+      import('./core/features/dashboard/dashboard').then(m => m.Dashboard),
+  },
+  {
+    path: 'atividades',
+    loadComponent: () =>
+      import('./core/features/atividade/pages/atividade-list/atividade-list').then(
+        m => m.AtividadeList
+      ),
+  },
+  {
+    path: 'atividade/novo',
+    loadComponent: () =>
+      import('./core/features/atividade/pages/atividade-form/atividade-form').then(
+        m => m.AtividadeForm
+      ),
   },
 ];
