@@ -21,11 +21,6 @@ export class AtividadeForm implements OnInit {
   empresas: EmpresaModel[] = [];
   categorias = Object.values(CategoriaAtividade);
 
-  // Formulário reativo, montado com FormGroup/FormControl "na mão" (sem
-  // FormBuilder injetado) — assim o form fica pronto já no field
-  // initializer, sem depender da ordem de execução do construtor.
-  // Os campos com Validators.required espelham as anotações
-  // @NotNull/@NotBlank do AtividadeRequest lá no backend.
   form = new FormGroup({
     titulo: new FormControl('', { nonNullable: true, validators: Validators.required }),
     data: new FormControl('', { nonNullable: true, validators: Validators.required }),
@@ -47,9 +42,6 @@ export class AtividadeForm implements OnInit {
     this.empresas = this.empresaService.buscarEmpresas();
   }
 
-  // Usado no template pra saber se mostra a borda vermelha + mensagem de erro
-  // de um campo específico. Só mostra depois que o usuário mexeu no campo
-  // (touched/dirty), pra não abrir a tela inteira "gritando" erro de cara.
   campoInvalido(nome: string): boolean {
     const controle = this.form.get(nome);
     return !!controle && controle.invalid && (controle.touched || controle.dirty);
@@ -57,14 +49,12 @@ export class AtividadeForm implements OnInit {
 
   onSubmit(): void {
     if (this.form.invalid) {
-      this.form.markAllAsTouched(); // revela os erros de todos os campos, mesmo os que ninguém tocou ainda
+      this.form.markAllAsTouched();
       return;
     }
 
     const valores = this.form.getRawValue();
 
-    // Os "!" abaixo são seguros aqui porque já garantimos form.valid acima
-    // (os campos obrigatórios não podem mais ser null/vazio nesse ponto).
     const request: AtividadeRequest = {
       titulo: valores.titulo!,
       data: valores.data!,
