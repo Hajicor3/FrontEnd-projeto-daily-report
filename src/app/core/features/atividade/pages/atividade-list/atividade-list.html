@@ -63,7 +63,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of atividadesFiltradas">
+        <tr *ngFor="let item of atividadesFiltradas" class="clickable-row" [routerLink]="['/atividade', item.id]">
           <td>{{ item.data | date:'dd/MM/yyyy' }}</td>
           <td>
             <div class="atividade-titulo">{{ item.titulo }}</div>
