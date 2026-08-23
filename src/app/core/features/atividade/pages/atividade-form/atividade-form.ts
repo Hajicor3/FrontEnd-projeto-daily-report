@@ -24,9 +24,6 @@ export class AtividadeForm implements OnInit {
   empresas: EmpresaModel[] = [];
   categorias = Object.values(CategoriaAtividade);
 
-  // null = modo criação. Preenchido = modo edição (veio um :id na rota).
-  // O template e o onSubmit usam esse campo pra decidir título, texto do
-  // botão e se chama criarAtividade ou atualizarAtividade.
   atividadeId: number | null = null;
 
   form = new FormGroup({
@@ -54,24 +51,31 @@ export class AtividadeForm implements OnInit {
   }
 
   ngOnInit(): void {
-    this.empresas = this.empresaService.buscarEmpresas();
+    this.loadEmpresas();
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (!idParam) {
-      return; // modo criação: form fica com os valores em branco/padrão
+      return;
     }
 
     this.atividadeId = Number(idParam);
-    const atividade = this.atividadeService.buscarAtividadePorId(this.atividadeId);
-
-    if (atividade) {
-      this.preencherFormComAtividade(atividade);
-    }
+    const atividade = this.loadAtividadeData(this.atividadeId);
   }
 
-  // Converte a Atividade (modelo de leitura, com Date de verdade) para o
-  // formato que o form espera (strings, iguais ao que os inputs
-  // type="date"/type="time" produzem) e joga tudo no form de uma vez.
+  loadEmpresas() {
+    this.empresaService.buscarEmpresas().subscribe(response => {
+      this.empresas = response;
+    });
+  }
+
+  loadAtividadeData(id: number) {
+    this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
+      if (atividade != null) {
+        this.preencherFormComAtividade(atividade);
+      }
+    });
+  }
+
   private preencherFormComAtividade(atividade: Atividade): void {
     this.form.patchValue({
       titulo: atividade.titulo,
@@ -125,11 +129,15 @@ export class AtividadeForm implements OnInit {
     };
 
     if (this.atividadeId) {
-      this.atividadeService.atualizarAtividade(this.atividadeId, request);
-      this.router.navigate(['/atividade', this.atividadeId]);
+      this.atividadeService.atualizarAtividade(this.atividadeId, request).subscribe(response => {
+        this.router.navigate(['/atividade', this.atividadeId]);
+      });
+
     } else {
-      this.atividadeService.criarAtividade(request);
-      this.router.navigate(['/atividades']);
+      this.atividadeService.criarAtividade(request).subscribe(response => {
+        this.router.navigate(['/atividades']);
+      });
+
     }
   }
 }

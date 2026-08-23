@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -23,6 +24,12 @@ export class DetalheEmpresas implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.empresa = this.empresaService.buscarEmpresaPorId(id);
+    this.loadEmpresaData(id)
+  }
+
+  loadEmpresaData(id: number) {
+    this.empresaService.buscarEmpresaPorId(id).subscribe(response => {
+      this.empresa = response;
+    })
   }
 }

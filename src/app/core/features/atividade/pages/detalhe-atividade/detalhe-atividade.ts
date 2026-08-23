@@ -15,8 +15,6 @@ export class DetalheAtividade implements OnInit {
   atividadeService: AtividadeService;
   route: ActivatedRoute;
 
-  // undefined até carregar; permanece undefined se o id da rota não bater
-  // com nenhuma atividade (mostra o estado "não encontrada" no template).
   atividade: Atividade | undefined;
 
   constructor(atividadeService: AtividadeService, route: ActivatedRoute) {
@@ -26,13 +24,15 @@ export class DetalheAtividade implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.atividade = this.atividadeService.buscarAtividadePorId(id);
+    this.loadAtividadeData(id);
   }
 
-  // Mesma lógica de cor de badge do atividade-list. Já é a 3ª cópia desse
-  // método (a outra está no atividade-form... na verdade não, só aqui e na
-  // lista) — bom candidato pra virar uma função utilitária compartilhada
-  // em vez de repetida em cada componente.
+  loadAtividadeData(id: number) {
+    this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
+      this.atividade = atividade;
+    });
+  }
+
   corDaCategoria(categoria: CategoriaAtividade): string {
     const mapa: Record<CategoriaAtividade, string> = {
       [CategoriaAtividade.DESENVOLVIMENTO]: 'badge-dev',

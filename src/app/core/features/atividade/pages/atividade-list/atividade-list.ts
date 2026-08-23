@@ -29,7 +29,13 @@ export class AtividadeList implements OnInit {
   }
 
   ngOnInit(): void {
-    this.atividades = this.atividadeService.buscarAtividades();
+    this.loadAtividades();
+  }
+
+  loadAtividades() {
+    this.atividadeService.buscarAtividades().subscribe(atividades => {
+      this.atividades = atividades;
+    })
   }
 
   get atividadesFiltradas(): Atividade[] {

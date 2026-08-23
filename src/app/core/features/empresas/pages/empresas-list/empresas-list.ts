@@ -23,7 +23,13 @@ export class EmpresasList implements OnInit {
   }
 
   ngOnInit(): void {
-    this.empresas = this.empresaService.buscarEmpresas();
+    this.loadEmpresas();
+  }
+
+  loadEmpresas() {
+    this.empresaService.buscarEmpresas().subscribe(response => {
+      this.empresas = response;
+    });
   }
 
   get empresasFiltradas(): EmpresaModel[] {

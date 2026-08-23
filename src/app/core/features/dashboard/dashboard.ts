@@ -27,7 +27,19 @@ export class Dashboard {
   }
 
   ngOnInit() {
-    this.atividades = this.atividadeService.buscarAtividades();
-    this.empresas = this.empresaService.buscarEmpresas();
+    this.loadAtividades();
+    this.loadEmpresas();
+  }
+
+  loadAtividades() {
+     this.atividadeService.buscarAtividades().subscribe( atividades => {
+      this.atividades = atividades;
+     })
+  }
+
+  loadEmpresas() {
+    this.empresaService.buscarEmpresas().subscribe(response => {
+      this.empresas = response;
+    });
   }
 }
