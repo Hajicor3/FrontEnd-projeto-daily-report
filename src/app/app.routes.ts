@@ -27,6 +27,21 @@ export const routes: Routes = [
   },
 
   {
+    path: 'empresa/novo',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/empresas-form/empresas-form').then(
+        m => m.EmpresasForm
+      ),
+  },
+  {
+    path: 'empresa/:id/editar',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/empresas-form/empresas-form').then(
+        m => m.EmpresasForm
+      ),
+  },
+
+  {
     path: 'atividade/novo',
     loadComponent: () =>
       import('./core/features/atividade/pages/atividade-form/atividade-form').then(

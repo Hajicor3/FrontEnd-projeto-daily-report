@@ -1,0 +1,30 @@
+<div class="empresas-main-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ empresaId ? 'Editar Empresa' : 'Nova Empresa' }}</h1>
+      <span>{{ empresaId ? 'Atualize os dados da empresa' : 'Cadastre uma nova empresa ou cliente' }}</span>
+    </div>
+    <a class="btn-secondary" [routerLink]="empresaId ? ['/empresa', empresaId] : ['/empresas']">← Voltar</a>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="form-field" [class.invalid]="campoInvalido('nome')">
+        <label for="nome">Nome *</label>
+        <input id="nome" type="text" formControlName="nome" placeholder="Ex: Tech Solutions" />
+        <span class="form-error" *ngIf="campoInvalido('nome')">O nome da empresa é obrigatório</span>
+      </div>
+
+      <div class="form-field">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" formControlName="descricao" placeholder="Sobre a empresa/cliente..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <a class="btn-secondary" [routerLink]="empresaId ? ['/empresa', empresaId] : ['/empresas']">Cancelar</a>
+        <button class="btn btn-primary" type="submit">{{ empresaId ? 'Salvar alterações' : 'Salvar empresa' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

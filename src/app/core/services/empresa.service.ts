@@ -1,5 +1,6 @@
 import { Service } from '@angular/core';
 import { EmpresaModel } from '../features/empresas/models/empresa.model';
+import { EmpresaRequest } from '../features/empresas/models/empresa-request.model';
 
 @Service()
 export class EmpresaService {
@@ -36,5 +37,17 @@ export class EmpresaService {
     ),
   ];
   return empresas;
+  }
+
+  buscarEmpresaPorId(id: number): EmpresaModel | undefined {
+    return this.buscarEmpresas().find(e => e.id === id);
+  }
+
+  criarEmpresa(request: EmpresaRequest): void {
+    console.log('criarEmpresa chamado com:', request);
+  }
+
+  atualizarEmpresa(id: number, request: EmpresaRequest): void {
+    console.log(`atualizarEmpresa(${id}) chamado com:`, request);
   }
 }
