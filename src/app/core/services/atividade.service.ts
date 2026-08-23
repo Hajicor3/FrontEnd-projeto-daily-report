@@ -1,6 +1,7 @@
 import { Service } from '@angular/core';
 import { Atividade } from '../features/atividade/models/atividade.model';
 import { CategoriaAtividade } from '../features/atividade/models/categoria-atividade.enum';
+import { AtividadeRequest } from '../features/atividade/models/atividade-request.model';
 
 @Service()
 export class AtividadeService {
@@ -139,4 +140,15 @@ export class AtividadeService {
     return atividades;
   }
 
+  criarAtividade(request: AtividadeRequest): void {
+    console.log('criarAtividade chamado com:', request);
+  }
+
+  buscarAtividadePorId(id: number): Atividade | undefined {
+    return this.buscarAtividades().find(a => a.id === id);
+  }
+
+  atualizarAtividade(id: number, request: AtividadeRequest): void {
+    console.log(`atualizarAtividade(${id}) chamado com:`, request);
+  }
 }
