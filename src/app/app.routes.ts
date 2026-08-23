@@ -18,6 +18,35 @@ export const routes: Routes = [
         m => m.AtividadeList
       ),
   },
+  {
+    path: 'empresas',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/empresas-list/empresas-list').then(
+        m => m.EmpresasList
+      ),
+  },
+
+  {
+    path: 'empresa/novo',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/empresas-form/empresas-form').then(
+        m => m.EmpresasForm
+      ),
+  },
+  {
+    path: 'empresa/:id',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/detalhe-empresas/detalhe-empresas').then(
+        m => m.DetalheEmpresas
+      ),
+  },
+  {
+    path: 'empresa/:id/editar',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/empresas-form/empresas-form').then(
+        m => m.EmpresasForm
+      ),
+  },
 
   {
     path: 'atividade/novo',

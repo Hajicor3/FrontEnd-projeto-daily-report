@@ -1,0 +1,50 @@
+<div class="empresas-main-container">
+  <div class="page-header">
+    <div>
+      <h1>Empresas</h1>
+      <span>Empresas e clientes cadastrados</span>
+    </div>
+
+    <button class="btn btn-primary" routerLink="/empresa/novo">
+      + Nova Empresa
+    </button>
+  </div>
+
+  <div class="filters-card">
+    <input
+      type="text"
+      class="filter-input"
+      placeholder="Buscar por nome..."
+      [(ngModel)]="termoBusca"
+    />
+  </div>
+
+  <div class="list-card">
+    <table class="empresa-table" *ngIf="empresasFiltradas.length > 0; else vazio">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Criado em</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of empresasFiltradas"
+          class="clickable-row"
+          [routerLink]="['/empresa', item.id]"
+        >
+          <td class="empresa-nome">{{ item.nome }}</td>
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.criadoEm | date:'dd/MM/yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #vazio>
+      <div class="empty-state">
+        <p>Nenhuma empresa encontrada com esse filtro.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
