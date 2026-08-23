@@ -34,6 +34,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'empresa/:id',
+    loadComponent: () =>
+      import('./core/features/empresas/pages/detalhe-empresas/detalhe-empresas').then(
+        m => m.DetalheEmpresas
+      ),
+  },
+  {
     path: 'empresa/:id/editar',
     loadComponent: () =>
       import('./core/features/empresas/pages/empresas-form/empresas-form').then(

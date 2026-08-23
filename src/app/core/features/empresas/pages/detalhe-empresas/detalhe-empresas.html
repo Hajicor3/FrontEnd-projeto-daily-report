@@ -1,0 +1,41 @@
+<div class="empresas-main-container">
+  <div class="page-header">
+    <div>
+      <h1>Detalhes da Empresa</h1>
+      <span>Visualização completa do cadastro</span>
+    </div>
+    <a class="btn-secondary" routerLink="/empresas">← Voltar</a>
+  </div>
+
+  <div class="detail-card" *ngIf="empresa; else naoEncontrada">
+    <div class="detail-header">
+      <h2>{{ empresa.nome }}</h2>
+      <a class="btn btn-primary" [routerLink]="['/empresa', empresa.id, 'editar']">
+        Editar
+      </a>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-field">
+        <span class="detail-label">Criado em</span>
+        <span class="detail-value">{{ empresa.criadoEm | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <div class="detail-field">
+        <span class="detail-label">Atualizado em</span>
+        <span class="detail-value">{{ empresa.atualizadoEm | date:'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
+
+    <div class="detail-field">
+      <span class="detail-label">Descrição</span>
+      <p class="detail-text">{{ empresa.descricao || 'Nenhuma descrição informada.' }}</p>
+    </div>
+  </div>
+
+  <ng-template #naoEncontrada>
+    <div class="empty-state-card">
+      <p>Empresa não encontrada.</p>
+    </div>
+  </ng-template>
+</div>
