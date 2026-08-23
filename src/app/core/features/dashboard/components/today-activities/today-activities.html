@@ -18,7 +18,7 @@
     </div>
     <div class="card-content">
       <ul class="activity-list">
-        <li class="activity-item" *ngFor="let item of atividades">
+        <li class="activity-item" *ngFor="let item of atividades | slice:0:4">
           <div class="activity-item-time">
           {{ item.horaInicio | date:'HH:mm' }} - {{ item.horaFim | date:'HH:mm' }}
         </div>
