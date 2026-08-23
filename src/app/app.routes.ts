@@ -33,4 +33,11 @@ export const routes: Routes = [
         m => m.DetalheAtividade
       ),
   },
+  {
+    path: 'atividade/:id/editar',
+    loadComponent: () =>
+      import('./core/features/atividade/pages/atividade-form/atividade-form').then(
+        m => m.AtividadeForm
+      ),
+  },
 ];

@@ -147,4 +147,8 @@ export class AtividadeService {
   buscarAtividadePorId(id: number): Atividade | undefined {
     return this.buscarAtividades().find(a => a.id === id);
   }
+
+  atualizarAtividade(id: number, request: AtividadeRequest): void {
+    console.log(`atualizarAtividade(${id}) chamado com:`, request);
+  }
 }

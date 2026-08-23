@@ -1,10 +1,10 @@
 <div class="atividade-main-container">
   <div class="page-header">
     <div>
-      <h1>Nova Atividade</h1>
-      <span>Registre uma atividade realizada</span>
+      <h1>{{ atividadeId ? 'Editar Atividade' : 'Nova Atividade' }}</h1>
+      <span>{{ atividadeId ? 'Atualize os dados da atividade' : 'Registre uma atividade realizada' }}</span>
     </div>
-    <a class="btn-secondary" routerLink="/atividades">← Voltar</a>
+    <a class="btn-secondary" [routerLink]="atividadeId ? ['/atividade', atividadeId] : ['/atividades']">← Voltar</a>
   </div>
 
   <div class="form-card">
@@ -74,8 +74,8 @@
       </div>
 
       <div class="form-actions">
-        <a class="btn-secondary" routerLink="/atividades">Cancelar</a>
-        <button class="btn btn-primary" type="submit">Salvar atividade</button>
+        <a class="btn-secondary" [routerLink]="atividadeId ? ['/atividade', atividadeId] : ['/atividades']">Cancelar</a>
+        <button class="btn btn-primary" type="submit">{{ atividadeId ? 'Salvar alterações' : 'Salvar atividade' }}</button>
       </div>
     </form>
   </div>
