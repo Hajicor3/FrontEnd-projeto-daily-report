@@ -1,0 +1,10 @@
+<div class="card-chart">
+  <div class="chart-title">📊 Horas por Empresa</div>
+
+  <div class="chart-bar" *ngFor="let item of horasPorEmpresa">
+    <div class="chart-bar-label">{{ item.empresa }}</div>
+    <div class="chart-bar-value" [style.width.%]="item.percentual">
+      {{ item.horas }}h
+    </div>
+  </div>
+</div>

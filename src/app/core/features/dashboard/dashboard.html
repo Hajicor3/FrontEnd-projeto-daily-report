@@ -1,0 +1,16 @@
+<div class="main-content">
+  <div class="dashboard-header-container">
+    <div class="dashboard-header">
+      <h1>Bem-vindo de volta!</h1>
+      <span>Aqui está o resumo do seu trabalho</span>
+    </div>
+
+    <div>
+      <button class="btn btn-primary" routerLink="nova-atividade">
+        + Nova Atividade
+      </button>
+    </div>
+  </div>
+  <app-stats-card [atividades]="atividades" [empresas]="empresas"></app-stats-card>
+  <app-today-activities [atividades]="atividades" [empresas]="empresas"></app-today-activities>
+</div>

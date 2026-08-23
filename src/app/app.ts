@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Slidebar } from "./core/shared/components/slidebar/slidebar";
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Slidebar],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
