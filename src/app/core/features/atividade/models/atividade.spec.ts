@@ -1,4 +1,4 @@
-import { Atividade } from './atividade';
+import { Atividade } from './atividade.model';
 
 describe('Atividade', () => {
   it('should create an instance', () => {
