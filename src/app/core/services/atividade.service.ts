@@ -1,6 +1,7 @@
 import { Service } from '@angular/core';
 import { Atividade } from '../features/atividade/models/atividade.model';
 import { CategoriaAtividade } from '../features/atividade/models/categoria-atividade.enum';
+import { AtividadeRequest } from '../features/atividade/models/atividade-request.model';
 
 @Service()
 export class AtividadeService {
@@ -139,4 +140,14 @@ export class AtividadeService {
     return atividades;
   }
 
+
+  // Por enquanto só loga o payload no console. Quando o backend estiver
+  // integrado, troque o corpo deste método por uma chamada HttpClient real,
+  // por exemplo:
+  // criarAtividade(request: AtividadeRequest) {
+  //   return this.http.post<void>('/api/atividades', request);
+  // }
+  criarAtividade(request: AtividadeRequest): void {
+    console.log('criarAtividade chamado com:', request);
+  }
 }

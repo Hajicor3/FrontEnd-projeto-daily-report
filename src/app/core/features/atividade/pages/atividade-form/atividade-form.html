@@ -1,1 +1,82 @@
-<p>atividade-form works!</p>
+<div class="atividade-main-container">
+  <div class="page-header">
+    <div>
+      <h1>Nova Atividade</h1>
+      <span>Registre uma atividade realizada</span>
+    </div>
+    <a class="btn-secondary" routerLink="/atividades">← Voltar</a>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="form-field" [class.invalid]="campoInvalido('titulo')">
+        <label for="titulo">Título *</label>
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Ex: Implementação da tela de login" />
+        <span class="form-error" *ngIf="campoInvalido('titulo')">O título é obrigatório</span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field" [class.invalid]="campoInvalido('data')">
+          <label for="data">Data *</label>
+          <input id="data" type="date" formControlName="data" />
+          <span class="form-error" *ngIf="campoInvalido('data')">A data é obrigatória</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="campoInvalido('categoria')">
+          <label for="categoria">Categoria *</label>
+          <select id="categoria" formControlName="categoria">
+            <option [ngValue]="null" disabled>Selecione...</option>
+            <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+          </select>
+          <span class="form-error" *ngIf="campoInvalido('categoria')">A categoria é obrigatória</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field" [class.invalid]="campoInvalido('empresaId')">
+          <label for="empresaId">Empresa *</label>
+          <select id="empresaId" formControlName="empresaId">
+            <option [ngValue]="null" disabled>Selecione...</option>
+            <option *ngFor="let empresa of empresas" [ngValue]="empresa.id">{{ empresa.nome }}</option>
+          </select>
+          <span class="form-error" *ngIf="campoInvalido('empresaId')">A empresa é obrigatória</span>
+        </div>
+
+        <div class="form-field">
+          <label for="projeto">Projeto</label>
+          <input id="projeto" type="text" formControlName="projeto" placeholder="Ex: Portal do Cliente" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field" [class.invalid]="campoInvalido('horaInicio')">
+          <label for="horaInicio">Hora inicial *</label>
+          <input id="horaInicio" type="time" formControlName="horaInicio" />
+          <span class="form-error" *ngIf="campoInvalido('horaInicio')">A hora inicial é obrigatória</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="campoInvalido('horaFim')">
+          <label for="horaFim">Hora final *</label>
+          <input id="horaFim" type="time" formControlName="horaFim" />
+          <span class="form-error" *ngIf="campoInvalido('horaFim')">A hora final é obrigatória</span>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" formControlName="descricao" placeholder="Detalhes do que foi feito..."></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="observacao">Observação</label>
+        <textarea id="observacao" formControlName="observacao" placeholder="Alguma observação adicional..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <a class="btn-secondary" routerLink="/atividades">Cancelar</a>
+        <button class="btn btn-primary" type="submit">Salvar atividade</button>
+      </div>
+    </form>
+  </div>
+</div>
