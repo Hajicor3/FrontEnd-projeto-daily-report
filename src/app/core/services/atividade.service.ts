@@ -25,4 +25,8 @@ export class AtividadeService {
   atualizarAtividade(id: number, request: AtividadeRequest): Observable<Atividade> {
     return this.http.put<Atividade>(`${this.apiUrl}/${id}`, request);
   }
+
+  deletarAtividade(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

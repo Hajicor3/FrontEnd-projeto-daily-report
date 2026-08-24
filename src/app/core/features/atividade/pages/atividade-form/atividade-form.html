@@ -76,6 +76,7 @@
       <div class="form-actions">
         <a class="btn-secondary" [routerLink]="atividadeId ? ['/atividade', atividadeId] : ['/atividades']">Cancelar</a>
         <button class="btn btn-primary" type="submit">{{ atividadeId ? 'Salvar alterações' : 'Salvar atividade' }}</button>
+        <button class="btn-danger" type="button" (click)="deletarAtividade(atividadeId)" *ngIf="atividadeId">Deletar</button>
       </div>
     </form>
   </div>
