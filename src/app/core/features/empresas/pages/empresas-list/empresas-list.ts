@@ -33,7 +33,7 @@ export class EmpresasList implements OnInit {
         this.empresas.set(response);
       },
       error: (erro) => {
-        console.error("❌ Falha ao carregar empresas: " + erro);
+        console.error("❌ Falha ao carregar empresas: " + erro.message);
       }
     });
   }

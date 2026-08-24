@@ -35,7 +35,7 @@ export class DetalheEmpresas implements OnInit {
       },
       error: (erro) => {
         console.error("❌ Falha ao carregar empresa com id: " + id);
-        console.error("erro: " + erro);
+        console.error("erro: " + erro.message);
       }
     })
   }

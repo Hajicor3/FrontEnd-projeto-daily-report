@@ -35,7 +35,7 @@ export class DetalheAtividade implements OnInit {
       },
       error: (erro) => {
         console.error("❌ Falha ao carregar atividade no id: " + id);
-        console.error("Erro: " + erro);
+        console.error("Erro: " + erro.message);
       }
     });
   }

@@ -38,7 +38,7 @@ export class AtividadeList implements OnInit {
         this.atividades.set(response);
       },
       error: (erro) => {
-        console.error("❌ Falha ao carregar atividades: " + erro)
+        console.error("❌ Falha ao carregar atividades: " + erro.message)
       }
     })
   }

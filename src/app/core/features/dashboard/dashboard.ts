@@ -38,7 +38,7 @@ export class Dashboard {
         this.atividades.set(response);
       },
       error: (erro) => {
-        console.error("❌ Falha ao carregar atividades: " + erro);
+        console.error("❌ Falha ao carregar atividades: " + erro.message);
       }
      })
   }
@@ -50,7 +50,7 @@ export class Dashboard {
         this.empresas.set(response);
       },
       error: (erro) => {
-        console.error("❌ Falha ao carregar empresas: " + erro);
+        console.error("❌ Falha ao carregar empresas: " + erro.message);
       }
     });
   }

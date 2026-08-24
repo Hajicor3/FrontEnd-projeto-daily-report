@@ -69,7 +69,7 @@ export class AtividadeForm implements OnInit {
         this.empresas.set(response);
       },
       error: (erro) => {
-        console.error("❌ Falha ao carregar empresas: " + erro)
+        console.error("❌ Falha ao carregar empresas: " + erro.message)
       }
     });
   }
@@ -83,7 +83,7 @@ export class AtividadeForm implements OnInit {
       },
       error: (erro) => {
         console.error("❌ Falha ao carregar atividade no id: "+ id);
-        console.error("Erro: " + erro);
+        console.error("Erro: " + erro.message);
       }
     });
   }
@@ -150,7 +150,7 @@ export class AtividadeForm implements OnInit {
           this.router.navigate(['/atividade', this.atividadeId]);
         },
         error: (erro) => {
-          console.error("❌ Falha ao atualizar a atividade: " + erro)
+          console.error("❌ Falha ao atualizar a atividade: " + erro.message);
         }
       });
 
@@ -161,10 +161,9 @@ export class AtividadeForm implements OnInit {
           this.router.navigate(['/atividades']);
         },
         error: (erro) => {
-          console.error("❌ Falha ao salvar a atividade: " + erro)
+          console.error("❌ Falha ao salvar a atividade: " + erro.message);
         }
       });
-
     }
   }
 
