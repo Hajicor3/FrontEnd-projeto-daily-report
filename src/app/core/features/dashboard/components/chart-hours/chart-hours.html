@@ -1,10 +1,16 @@
 <div class="card-chart">
   <div class="chart-title">📊 Horas por Empresa</div>
 
-  <div class="chart-bar" *ngFor="let item of horasPorEmpresa">
-    <div class="chart-bar-label">{{ item.empresa }}</div>
-    <div class="chart-bar-value" [style.width.%]="item.percentual">
-      {{ item.horas | number:'1.1-1' }}H
+  <ng-container *ngIf="empresas().length > 0; else semEmpresas">
+    <div class="chart-bar" *ngFor="let item of horasPorEmpresa">
+      <div class="chart-bar-label">{{ item.empresa }}</div>
+      <div class="chart-bar-value" [style.width.%]="item.percentual">
+        {{ item.horas | number:'1.1-1' }}H
+      </div>
     </div>
-  </div>
+  </ng-container>
+
+  <ng-template #semEmpresas>
+    <p class="chart-empty-state">Empresas não encontradas</p>
+  </ng-template>
 </div>
