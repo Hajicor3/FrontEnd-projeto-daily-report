@@ -41,12 +41,18 @@ export class EmpresasForm implements OnInit {
   }
 
   loadEmpresaData(id: number) {
-    this.empresaService.buscarEmpresaPorId(id).subscribe(response => {
-      if (response) {
-        this.form.patchValue({
-          nome: response.nome as string,
-          descricao: response.descricao as string,
-        });
+    this.empresaService.buscarEmpresaPorId(id).subscribe({
+      next: (response) => {
+        if (response) {
+          console.log('✅ Empresa carregada com sucesso!');
+          this.form.patchValue({
+            nome: response.nome as string,
+            descricao: response.descricao as string,
+          });
+        }
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar empresa: " + erro.message);
       }
     });
   }
@@ -70,13 +76,27 @@ export class EmpresasForm implements OnInit {
     };
 
     if (this.empresaId) {
-      this.empresaService.atualizarEmpresa(this.empresaId, request).subscribe(response => {
-        this.router.navigate(['/empresa', this.empresaId]);
+      this.empresaService.atualizarEmpresa(this.empresaId, request).subscribe({
+        next: () => {
+          console.log('✅ Empresa atualizada com sucesso!');
+          this.router.navigate(['/empresa', this.empresaId]);
+        },
+        error: (erro) => {
+          console.error('❌ Erro ao atualizar empresa:', erro.message);
+        }
+
       });
 
     } else {
-      this.empresaService.criarEmpresa(request).subscribe(response => {
-        this.router.navigate(['/empresas']);
+      this.empresaService.criarEmpresa(request).subscribe({
+        next: () => {
+          console.log('✅ Empresa criada com sucesso!');
+          this.router.navigate(['/empresas']);
+        },
+        error: (erro) => {
+          console.error('❌ Erro ao criar empresa:', erro.message);
+        }
+
       });
 
     }
@@ -85,11 +105,11 @@ export class EmpresasForm implements OnInit {
   deletarEmpresa(id:number) {
     this.empresaService.deletarEmpresa(id).subscribe({
       next: () => {
-        console.log('✅ Deletado com sucesso!');
+        console.log('✅ Empresa deletada com sucesso!');
         this.router.navigate(['/empresas']);
       },
       error: (erro) => {
-        console.error('❌ Erro ao deletar:', erro.message);
+        console.error('❌ Erro ao deletar empresa:', erro.message);
       }
     })
   }
