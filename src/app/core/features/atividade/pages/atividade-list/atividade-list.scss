@@ -64,33 +64,10 @@
   }
 }
 
-.filter-date-group {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: white;
-
-  &:focus-within {
-    border-color: #667eea;
-  }
-}
-
-.filter-input-mes,
-.filter-input-ano {
-  border: none;
-  outline: none;
-  font-size: 14px;
-  text-align: center;
-}
-
-.filter-input-mes { width: 24px; }
-.filter-input-ano { width: 40px; }
-
-.filter-date-separator {
-  color: #999;
+.filter-input-data {
+  flex: none;
+  width: 170px;
+  color: #333;
 }
 
 .filter-select {
