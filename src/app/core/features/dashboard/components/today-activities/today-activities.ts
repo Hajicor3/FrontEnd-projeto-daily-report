@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { Atividade } from '../../../atividade/models/atividade.model';
@@ -15,4 +15,20 @@ import { RouterLink } from '@angular/router';
 export class TodayActivities {
   atividades = input<Atividade[]>([]);
   empresas = input<EmpresaModel[]>([]);
+
+  DataAtual = new Date();
+  horasTotaisDia = computed(() => {
+    const minutos = this.atividadesDeHoje().reduce((soma, a) => soma + a.minutosTrabalhados, 0)
+    return minutos / 60
+  })
+
+  atividadesDeHoje = computed(() => {
+    const hoje = new Date();
+    const ano = String(hoje.getFullYear());
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const hojeStr = `${ano}-${mes}-${dia}`;
+
+    return this.atividades().filter(a => a.data === hojeStr);
+  });
 }

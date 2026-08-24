@@ -6,19 +6,19 @@
           <span>Atividades de hoje</span>
         </div>
         <div class="card-header-subtitle">
-          <span>data de hoje</span>
+          <span>{{ DataAtual | date:"d 'de' MMMM 'de' y":'':'pt-BR' }}</span>
         </div>
       </div>
       <div>
         <div style="text-align: right;">
-          <div class="card-header-total">5h</div>
+          <div class="card-header-total">{{ horasTotaisDia() | number:'1.1-1' }}h</div>
           <div class="card-header-label">TOTAL DO DIA</div>
         </div>
       </div>
     </div>
     <div class="card-content">
       <ul class="activity-list">
-        <li class="activity-item clickable-row" *ngFor="let item of atividades() | slice:0:3" [routerLink]="['/atividade', item.id]">
+        <li class="activity-item clickable-row" *ngFor="let item of atividadesDeHoje() | slice:0:3" [routerLink]="['/atividade', item.id]">
           <div class="activity-item-time">
             {{ item.horaInicio | slice:0:5 }} - {{ item.horaFim | slice:0:5 }}
           </div>
