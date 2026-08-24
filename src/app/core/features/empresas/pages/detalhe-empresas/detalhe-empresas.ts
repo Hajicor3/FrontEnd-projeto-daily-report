@@ -28,8 +28,15 @@ export class DetalheEmpresas implements OnInit {
   }
 
   loadEmpresaData(id: number) {
-    this.empresaService.buscarEmpresaPorId(id).subscribe(response => {
-      this.empresa.set(response);
+    this.empresaService.buscarEmpresaPorId(id).subscribe({
+      next: (response) => {
+        console.log('✅ Empresa carregada com sucesso!');
+        this.empresa.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar empresa com id: " + id);
+        console.error("erro: " + erro);
+      }
     })
   }
 }
