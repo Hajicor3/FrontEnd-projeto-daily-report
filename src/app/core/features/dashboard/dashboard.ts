@@ -32,14 +32,26 @@ export class Dashboard {
   }
 
   loadAtividades() {
-     this.atividadeService.buscarAtividades().subscribe( atividades => {
-      this.atividades.set(atividades);
+     this.atividadeService.buscarAtividades().subscribe({
+      next: (response) => {
+        console.log('✅ Atividades carregadas com sucesso!');
+        this.atividades.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar atividades: " + erro);
+      }
      })
   }
 
   loadEmpresas() {
-    this.empresaService.buscarEmpresas().subscribe(response => {
-      this.empresas.set(response);
+    this.empresaService.buscarEmpresas().subscribe({
+      next: (response) => {
+        console.log('✅ Empresas carregadas com sucesso!');
+        this.empresas.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar empresas: " + erro);
+      }
     });
   }
 }
