@@ -28,8 +28,15 @@ export class DetalheAtividade implements OnInit {
   }
 
   loadAtividadeData(id: number) {
-    this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
-      this.atividade.set(atividade);
+    this.atividadeService.buscarAtividadePorId(id).subscribe({
+      next: (response) => {
+        console.log('✅ Atividade carregada com sucesso!');
+        this.atividade.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar atividade no id: " + id);
+        console.error("Erro: " + erro);
+      }
     });
   }
 
