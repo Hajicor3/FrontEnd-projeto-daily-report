@@ -50,6 +50,8 @@
 
 .chart-bar-value {
   height: 35px;
+  min-width: 60px;
+  box-sizing: border-box;
   background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   border-radius: 4px;
   display: flex;
@@ -58,6 +60,7 @@
   color: white;
   font-weight: bold;
   font-size: 12px;
+  white-space: nowrap;
   transition: width 0.3s ease;
 
   &:hover {
