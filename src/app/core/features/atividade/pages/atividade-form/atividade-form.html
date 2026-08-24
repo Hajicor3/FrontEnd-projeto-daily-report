@@ -38,7 +38,7 @@
           <label for="empresaId">Empresa *</label>
           <select id="empresaId" formControlName="empresaId">
             <option [ngValue]="null" disabled>Selecione...</option>
-            <option *ngFor="let empresa of empresas" [ngValue]="empresa.id">{{ empresa.nome }}</option>
+            <option *ngFor="let empresa of empresas()" [ngValue]="empresa.id">{{ empresa.nome }}</option>
           </select>
           <span class="form-error" *ngIf="campoInvalido('empresaId')">A empresa é obrigatória</span>
         </div>

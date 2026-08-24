@@ -2,10 +2,10 @@ export class EmpresaModel {
   id: number;
   nome: String;
   descricao: String;
-  criadoEm: Date;
-  atualizadoEm: Date;
+  criadoEm: string;
+  atualizadoEm: string;
 
-  constructor(id: number, nome: String, descricao: String, criadoEm: Date, atualizadoEm: Date){
+  constructor(id: number, nome: String, descricao: String, criadoEm: string, atualizadoEm: string){
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;

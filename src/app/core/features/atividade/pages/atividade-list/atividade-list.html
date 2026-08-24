@@ -18,29 +18,11 @@
       [(ngModel)]="termoBusca"
     />
 
-    <div class="filter-date-group">
-      <input
-        #mesInput
-        type="text"
-        inputmode="numeric"
-        maxlength="2"
-        placeholder="MM"
-        class="filter-input-mes"
-        [ngModel]="filtroMes"
-        (ngModelChange)="onMesChange($event, anoInput)"
-      />
-      <span class="filter-date-separator">/</span>
-      <input
-        #anoInput
-        type="text"
-        inputmode="numeric"
-        maxlength="4"
-        placeholder="AAAA"
-        class="filter-input-ano"
-        [ngModel]="filtroAno"
-        (ngModelChange)="onAnoChange($event)"
-      />
-    </div>
+    <input
+      type="date"
+      class="filter-input filter-input-data"
+      [(ngModel)]="filtroDataInput"
+    />
 
     <select class="filter-select" [(ngModel)]="categoriaSelecionada">
       <option value="TODAS">Todas as categorias</option>
@@ -71,11 +53,11 @@
           </td>
           <td>{{ item.empresaNome }}</td>
           <td>
-            <span class="badge" [ngClass]="corDaCategoria(item.categoriaAtividade)">
-              {{ item.categoriaAtividade }}
+            <span class="badge" [ngClass]="corDaCategoria(item.categoria)">
+              {{ item.categoria }}
             </span>
           </td>
-          <td>{{ item.horaInicio | date:'HH:mm' }} - {{ item.horaFim | date:'HH:mm' }}</td>
+          <td>{{ item.horaInicio | slice:0:5 }} - {{ item.horaFim | slice:0:5 }}</td>
           <td>{{ item.minutosTrabalhados }} min</td>
         </tr>
       </tbody>

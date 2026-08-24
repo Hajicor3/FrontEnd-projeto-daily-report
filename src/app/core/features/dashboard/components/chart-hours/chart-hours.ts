@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmpresaModel } from '../../../empresas/models/empresa.model';
 import { Atividade } from '../../../atividade/models/atividade.model';
@@ -12,15 +12,12 @@ import { CategoriaAtividade } from '../../../atividade/models/categoria-atividad
 })
 export class ChartHours {
 
-  @Input()
-  empresas: EmpresaModel[] = [];
-
-  @Input()
-  atividades: Atividade[] = [];
+  empresas = input<EmpresaModel[]>([]);
+  atividades = input<Atividade[]>([]);
 
   get horasPorEmpresa() {
-    const totais = this.empresas.map(empresa => {
-      const minutos = this.atividades
+    const totais = this.empresas().map(empresa => {
+      const minutos = this.atividades()
         .filter(a => a.empresaId === empresa.id)
         .reduce((soma, a) => soma + a.minutosTrabalhados, 0);
 

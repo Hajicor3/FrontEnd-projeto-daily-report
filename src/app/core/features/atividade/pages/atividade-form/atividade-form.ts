@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -21,12 +21,9 @@ export class AtividadeForm implements OnInit {
   route: ActivatedRoute;
   router: Router;
 
-  empresas: EmpresaModel[] = [];
+  empresas = signal<EmpresaModel[]>([]);
   categorias = Object.values(CategoriaAtividade);
 
-  // null = modo criação. Preenchido = modo edição (veio um :id na rota).
-  // O template e o onSubmit usam esse campo pra decidir título, texto do
-  // botão e se chama criarAtividade ou atualizarAtividade.
   atividadeId: number | null = null;
 
   form = new FormGroup({
@@ -54,29 +51,36 @@ export class AtividadeForm implements OnInit {
   }
 
   ngOnInit(): void {
-    this.empresas = this.empresaService.buscarEmpresas();
+    this.loadEmpresas();
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (!idParam) {
-      return; // modo criação: form fica com os valores em branco/padrão
+      return;
     }
 
     this.atividadeId = Number(idParam);
-    const atividade = this.atividadeService.buscarAtividadePorId(this.atividadeId);
-
-    if (atividade) {
-      this.preencherFormComAtividade(atividade);
-    }
+    const atividade = this.loadAtividadeData(this.atividadeId);
   }
 
-  // Converte a Atividade (modelo de leitura, com Date de verdade) para o
-  // formato que o form espera (strings, iguais ao que os inputs
-  // type="date"/type="time" produzem) e joga tudo no form de uma vez.
+  loadEmpresas() {
+    this.empresaService.buscarEmpresas().subscribe(response => {
+      this.empresas.set(response);
+    });
+  }
+
+  loadAtividadeData(id: number) {
+    this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
+      if (atividade != null) {
+        this.preencherFormComAtividade(atividade);
+      }
+    });
+  }
+
   private preencherFormComAtividade(atividade: Atividade): void {
     this.form.patchValue({
       titulo: atividade.titulo,
       data: this.formatarData(atividade.data),
-      categoria: atividade.categoriaAtividade,
+      categoria: atividade.categoria,
       empresaId: atividade.empresaId,
       projeto: atividade.projeto,
       horaInicio: this.formatarHora(atividade.horaInicio),
@@ -86,17 +90,20 @@ export class AtividadeForm implements OnInit {
     });
   }
 
-  private formatarData(data: Date): string {
-    const ano = data.getFullYear();
-    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
-    const dia = data.getDate().toString().padStart(2, '0');
-    return `${ano}-${mes}-${dia}`;
+  private formatarData(data: string): string {
+    // "data" já vem do backend como yyyy-MM-dd, que é o formato que o
+    // input type="date" espera. Não passamos por `new Date(...)` aqui: uma
+    // string de data "pura" (sem hora) é interpretada como meia-noite UTC, e
+    // reformatar com getFullYear/getMonth/getDate (que leem no horário local)
+    // pode voltar um dia a menos em fusos atrás do UTC.
+    return data.slice(0, 10);
   }
 
-  private formatarHora(hora: Date): string {
-    const h = hora.getHours().toString().padStart(2, '0');
-    const m = hora.getMinutes().toString().padStart(2, '0');
-    return `${h}:${m}`;
+  private formatarHora(hora: string): string {
+    // "hora" vem como HH:mm:ss, sem nenhuma data junto — não dá pra montar um
+    // Date válido só com isso. Como só precisamos do HH:mm pro input
+    // type="time", um corte de string resolve sem esse problema.
+    return hora.slice(0, 5);
   }
 
   campoInvalido(nome: string): boolean {
@@ -125,11 +132,15 @@ export class AtividadeForm implements OnInit {
     };
 
     if (this.atividadeId) {
-      this.atividadeService.atualizarAtividade(this.atividadeId, request);
-      this.router.navigate(['/atividade', this.atividadeId]);
+      this.atividadeService.atualizarAtividade(this.atividadeId, request).subscribe(response => {
+        this.router.navigate(['/atividade', this.atividadeId]);
+      });
+
     } else {
-      this.atividadeService.criarAtividade(request);
-      this.router.navigate(['/atividades']);
+      this.atividadeService.criarAtividade(request).subscribe(response => {
+        this.router.navigate(['/atividades']);
+      });
+
     }
   }
 }

@@ -4,10 +4,10 @@
       ⏱️
     </div>
     <div class="stats-card-header">
-      <p>HORAS TRABALHADAS</p>
+      <p>HORAS TRABALHADAS (MÊS)</p>
     </div>
     <div class="stats-card-content">
-      <span>142H</span>
+      <span>{{ horasTrabalhadasMes() | number:'1.1-1' }}H</span>
     </div>
   </div>
 
@@ -19,7 +19,7 @@
       <p>ATIVIDADES REGISTRADAS</p>
     </div>
     <div class="stats-card-content">
-      <span>83</span>
+      <span>{{atividades().length}}</span>
     </div>
   </div>
 
@@ -31,7 +31,7 @@
       <p>EMPRESAS ATIVAS</p>
     </div>
     <div class="stats-card-content">
-      <span>4</span>
+      <span>{{empresas().length}}</span>
     </div>
   </div>
 
@@ -40,10 +40,10 @@
       📈
     </div>
     <div class="stats-card-header">
-      <p>PRODUTIVIDADE</p>
+      <p>PRODUTIVIDADE (MÉDIA/DIA)</p>
     </div>
     <div class="stats-card-content">
-      <span>8.5H</span>
+      <span>{{ produtividade() | number:'1.1-1' }}H</span>
     </div>
   </div>
 </div>

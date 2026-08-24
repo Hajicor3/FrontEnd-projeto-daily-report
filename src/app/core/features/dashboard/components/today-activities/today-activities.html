@@ -6,31 +6,38 @@
           <span>Atividades de hoje</span>
         </div>
         <div class="card-header-subtitle">
-          <span>data de hoje</span>
+          <span>{{ DataAtual | date:"d 'de' MMMM 'de' y":'':'pt-BR' }}</span>
         </div>
       </div>
       <div>
         <div style="text-align: right;">
-          <div class="card-header-total">5h</div>
+          <div class="card-header-total">{{ horasTotaisDia() | number:'1.1-1' }}h</div>
           <div class="card-header-label">TOTAL DO DIA</div>
         </div>
       </div>
     </div>
     <div class="card-content">
-      <ul class="activity-list">
-        <li class="activity-item clickable-row" *ngFor="let item of atividades | slice:0:3" [routerLink]="['/atividade', item.id]">
-          <div class="activity-item-time">
-            {{ item.horaInicio | date:'HH:mm' }} - {{ item.horaFim | date:'HH:mm' }}
-          </div>
-          <div class="activity-item-details">
-            <div class="activity-item-title">{{ item.titulo }}</div>
-            <div class="activity-item-company">{{ item.empresaNome }}</div>
-          </div>
-          <div class="activity-item-duration">{{ item.minutosTrabalhados }} min</div>
-      </li>
-      </ul>
+      <ng-container *ngIf="atividadesDeHoje().length > 0; else semAtividades">
+        <ul class="activity-list">
+          <li class="activity-item clickable-row" *ngFor="let item of atividadesDeHoje() | slice:0:3" [routerLink]="['/atividade', item.id]">
+            <div class="activity-item-time">
+              {{ item.horaInicio | slice:0:5 }} - {{ item.horaFim | slice:0:5 }}
+            </div>
+            <div class="activity-item-details">
+              <div class="activity-item-title">{{ item.titulo }}</div>
+              <div class="activity-item-company">{{ item.empresaNome }}</div>
+            </div>
+            <div class="activity-item-duration">{{ item.minutosTrabalhados }} min</div>
+        </li>
+        </ul>
+      </ng-container>
+
+      <ng-template #semAtividades>
+        <p class="activity-empty-state">Atividades não encontradas</p>
+      </ng-template>
+
        <a class="view-all-link" href="atividades">Ver todas as atividades →</a>
     </div>
   </div>
-  <app-chart-hours [atividades]="atividades" [empresas]="empresas"></app-chart-hours>
+  <app-chart-hours [atividades]="atividades()" [empresas]="empresas()"></app-chart-hours>
 </div>

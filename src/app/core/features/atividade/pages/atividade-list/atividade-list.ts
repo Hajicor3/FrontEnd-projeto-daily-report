@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,11 +15,10 @@ import { CategoriaAtividade } from '../../models/categoria-atividade.enum';
 export class AtividadeList implements OnInit {
   atividadeService: AtividadeService;
 
-  atividades: Atividade[] = [];
+  atividades = signal<Atividade[]>([]);
 
   termoBusca: string = '';
-  filtroMes: string = '';
-  filtroAno: string = new Date().getFullYear().toString();
+  filtroData: Date | null = null;
   categoriaSelecionada: CategoriaAtividade | 'TODAS' = 'TODAS';
 
   categorias = Object.values(CategoriaAtividade);
@@ -29,20 +28,54 @@ export class AtividadeList implements OnInit {
   }
 
   ngOnInit(): void {
-    this.atividades = this.atividadeService.buscarAtividades();
+    this.loadAtividades();
+  }
+
+  loadAtividades() {
+    this.atividadeService.buscarAtividades().subscribe(atividades => {
+      this.atividades.set(atividades);
+    })
+  }
+
+  // O <input type="date"> nativo só fala string "yyyy-MM-dd" (tanto pra
+  // exibir quanto pra emitir mudanças). Esse getter/setter é a ponte entre
+  // essa string e o "filtroData" tipado como Date de verdade: o getter
+  // formata o Date pra string usando os componentes locais (getFullYear/
+  // getMonth/getDate), e o setter faz o caminho inverso construindo o Date
+  // a partir de ano/mês/dia (em vez de "new Date(valor)"), evitando o mesmo
+  // problema de fuso horário (meia-noite UTC) que já resolvemos antes.
+  get filtroDataInput(): string {
+    if (!this.filtroData) return '';
+
+    const ano = this.filtroData.getFullYear();
+    const mes = String(this.filtroData.getMonth() + 1).padStart(2, '0');
+    const dia = String(this.filtroData.getDate()).padStart(2, '0');
+
+    return `${ano}-${mes}-${dia}`;
+  }
+
+  set filtroDataInput(valor: string) {
+    if (!valor) {
+      this.filtroData = null;
+      return;
+    }
+
+    const [ano, mes, dia] = valor.split('-').map(Number);
+    this.filtroData = new Date(ano, mes - 1, dia);
   }
 
   get atividadesFiltradas(): Atividade[] {
     const termo = this.termoBusca.toLowerCase().trim();
-    const temFiltroData = this.filtroMes.length === 2 && this.filtroAno.length === 4;
-    const mesFiltro = Number(this.filtroMes);
-    const anoFiltro = Number(this.filtroAno);
 
-    return this.atividades
-      .filter(a => this.categoriaSelecionada === 'TODAS' || a.categoriaAtividade === this.categoriaSelecionada)
+    // "data" é uma string yyyy-MM-dd. Comparamos com "filtroDataInput" (que
+    // já é a mesma string formatada a partir do Date) em vez de comparar
+    // objetos Date entre si, mantendo a mesma abordagem de string usada no
+    // resto do componente.
+    return this.atividades()
+      .filter(a => this.categoriaSelecionada === 'TODAS' || a.categoria === this.categoriaSelecionada)
       .filter(a => a.titulo.toLowerCase().includes(termo))
-      .filter(a => !temFiltroData || (a.data.getMonth() + 1 === mesFiltro && a.data.getFullYear() === anoFiltro))
-      .sort((a, b) => b.data.getTime() - a.data.getTime());
+      .filter(a => !this.filtroData || a.data === this.filtroDataInput)
+      .sort((a, b) => b.data.localeCompare(a.data));
   }
 
   corDaCategoria(categoria: CategoriaAtividade): string {
@@ -58,17 +91,5 @@ export class AtividadeList implements OnInit {
       [CategoriaAtividade.OUTROS]: 'badge-outros',
     };
     return mapa[categoria];
-  }
-
-  onMesChange(valor: string, anoInputRef: HTMLInputElement): void {
-    this.filtroMes = valor.replace(/\D/g, '').slice(0, 2);
-
-    if (this.filtroMes.length === 2) {
-      anoInputRef.focus();
-    }
-  }
-
-  onAnoChange(valor: string): void {
-    this.filtroAno = valor.replace(/\D/g, '').slice(0, 4);
   }
 }

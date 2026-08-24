@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -36,14 +37,18 @@ export class EmpresasForm implements OnInit {
     }
 
     this.empresaId = Number(idParam);
-    const empresa = this.empresaService.buscarEmpresaPorId(this.empresaId);
+    this.loadEmpresaData(this.empresaId);
+  }
 
-    if (empresa) {
-      this.form.patchValue({
-        nome: empresa.nome as string,
-        descricao: empresa.descricao as string,
-      });
-    }
+  loadEmpresaData(id: number) {
+    this.empresaService.buscarEmpresaPorId(id).subscribe(response => {
+      if (response) {
+        this.form.patchValue({
+          nome: response.nome as string,
+          descricao: response.descricao as string,
+        });
+      }
+    });
   }
 
   campoInvalido(nome: string): boolean {
@@ -65,11 +70,15 @@ export class EmpresasForm implements OnInit {
     };
 
     if (this.empresaId) {
-      this.empresaService.atualizarEmpresa(this.empresaId, request);
-      this.router.navigate(['/empresa', this.empresaId]);
+      this.empresaService.atualizarEmpresa(this.empresaId, request).subscribe(response => {
+        this.router.navigate(['/empresa', this.empresaId]);
+      });
+
     } else {
-      this.empresaService.criarEmpresa(request);
-      this.router.navigate(['/empresas']);
+      this.empresaService.criarEmpresa(request).subscribe(response => {
+        this.router.navigate(['/empresas']);
+      });
+
     }
   }
 }

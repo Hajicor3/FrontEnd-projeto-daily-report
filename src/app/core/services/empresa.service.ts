@@ -1,53 +1,28 @@
-import { Service } from '@angular/core';
+import { Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { EmpresaModel } from '../features/empresas/models/empresa.model';
 import { EmpresaRequest } from '../features/empresas/models/empresa-request.model';
 
-@Service()
+
+@Injectable({ providedIn: 'root' })
 export class EmpresaService {
+  private readonly apiUrl = "http://localhost:8080/api/empresas";
+  private readonly http = inject(HttpClient);
 
-  buscarEmpresas(): EmpresaModel[] {
-    const empresas: EmpresaModel[] = [
-    new EmpresaModel(
-      1,
-      'VT Integração',
-      'Integração de sistemas de transporte e bilhetagem',
-      new Date(2026, 0, 10),
-      new Date(2026, 0, 10)
-    ),
-    new EmpresaModel(
-      2,
-      'Tech Solutions',
-      'Consultoria e desenvolvimento de software sob demanda',
-      new Date(2026, 1, 15),
-      new Date(2026, 1, 15)
-    ),
-    new EmpresaModel(
-      3,
-      'Sistema Escolar',
-      'Plataforma de gestão acadêmica para escolas',
-      new Date(2026, 2, 3),
-      new Date(2026, 2, 3)
-    ),
-    new EmpresaModel(
-      4,
-      'Outros',
-      'Projetos pontuais e freelas diversos',
-      new Date(2026, 3, 1),
-      new Date(2026, 3, 1)
-    ),
-  ];
-  return empresas;
+  buscarEmpresas(): Observable<EmpresaModel[]> {
+    return this.http.get<EmpresaModel[]>(this.apiUrl);
   }
 
-  buscarEmpresaPorId(id: number): EmpresaModel | undefined {
-    return this.buscarEmpresas().find(e => e.id === id);
+  buscarEmpresaPorId(id: number): Observable<EmpresaModel> {
+    return this.http.get<EmpresaModel>(`${this.apiUrl}/${id}`);
   }
 
-  criarEmpresa(request: EmpresaRequest): void {
-    console.log('criarEmpresa chamado com:', request);
+  criarEmpresa(request: EmpresaRequest): Observable<EmpresaModel> {
+    return this.http.post<EmpresaModel>(this.apiUrl, request);
   }
 
-  atualizarEmpresa(id: number, request: EmpresaRequest): void {
-    console.log(`atualizarEmpresa(${id}) chamado com:`, request);
+  atualizarEmpresa(id: number, request: EmpresaRequest): Observable<EmpresaModel>  {
+    return this.http.put<EmpresaModel>(`${this.apiUrl}/${id}`, request);
   }
 }
