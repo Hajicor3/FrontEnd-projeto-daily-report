@@ -27,8 +27,14 @@ export class EmpresasList implements OnInit {
   }
 
   loadEmpresas() {
-    this.empresaService.buscarEmpresas().subscribe(response => {
-      this.empresas.set(response);
+    this.empresaService.buscarEmpresas().subscribe({
+      next: (response) => {
+        console.log('✅ Empresas carregadas com sucesso!');
+        this.empresas.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar empresas: " + erro);
+      }
     });
   }
 
