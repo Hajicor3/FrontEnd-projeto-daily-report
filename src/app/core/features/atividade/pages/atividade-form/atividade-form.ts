@@ -171,12 +171,12 @@ export class AtividadeForm implements OnInit {
   deletarAtividade(id: number){
     this.atividadeService.deletarAtividade(id).subscribe({
       next: () => {
-        console.log('✅ Deletado com sucesso!');
+        console.log('✅ Atividade deletada com sucesso!');
         this.router.navigate(['/atividades'])
 
       },
       error: (erro) => {
-        console.error('❌ Erro ao deletar:', erro.message);
+        console.error('❌ Erro ao deletar atividade:', erro.message);
 
       }
     })
