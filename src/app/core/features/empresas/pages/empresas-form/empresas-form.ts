@@ -81,4 +81,16 @@ export class EmpresasForm implements OnInit {
 
     }
   }
+
+  deletarEmpresa(id:number) {
+    this.empresaService.deletarEmpresa(id).subscribe({
+      next: () => {
+        console.log('✅ Deletado com sucesso!');
+        this.router.navigate(['/empresas']);
+      },
+      error: (erro) => {
+        console.error('❌ Erro ao deletar:', erro.message);
+      }
+    })
+  }
 }

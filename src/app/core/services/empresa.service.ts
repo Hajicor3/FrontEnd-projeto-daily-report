@@ -25,4 +25,8 @@ export class EmpresaService {
   atualizarEmpresa(id: number, request: EmpresaRequest): Observable<EmpresaModel>  {
     return this.http.put<EmpresaModel>(`${this.apiUrl}/${id}`, request);
   }
+
+  deletarEmpresa(id: number): Observable<void>  {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
