@@ -63,15 +63,27 @@ export class AtividadeForm implements OnInit {
   }
 
   loadEmpresas() {
-    this.empresaService.buscarEmpresas().subscribe(response => {
-      this.empresas.set(response);
+    this.empresaService.buscarEmpresas().subscribe({
+      next: (response) =>{
+        console.log('✅ Empresas carregadas com sucesso!');
+        this.empresas.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar empresas: " + erro)
+      }
     });
   }
 
   loadAtividadeData(id: number) {
-    this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
-      if (atividade != null) {
-        this.preencherFormComAtividade(atividade);
+    this.atividadeService.buscarAtividadePorId(id).subscribe({
+      next: (response) => {
+        if (response != null) {
+          this.preencherFormComAtividade(response);
+        }
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar atividade no id: "+ id);
+        console.error("Erro: " + erro);
       }
     });
   }
@@ -132,13 +144,25 @@ export class AtividadeForm implements OnInit {
     };
 
     if (this.atividadeId) {
-      this.atividadeService.atualizarAtividade(this.atividadeId, request).subscribe(response => {
-        this.router.navigate(['/atividade', this.atividadeId]);
+      this.atividadeService.atualizarAtividade(this.atividadeId, request).subscribe({
+        next: (response) => {
+          console.log('✅ Atividade atualizada com sucesso!');
+          this.router.navigate(['/atividade', this.atividadeId]);
+        },
+        error: (erro) => {
+          console.error("❌ Falha ao atualizar a atividade: " + erro)
+        }
       });
 
     } else {
-      this.atividadeService.criarAtividade(request).subscribe(response => {
-        this.router.navigate(['/atividades']);
+      this.atividadeService.criarAtividade(request).subscribe({
+        next: (response) => {
+          console.log('✅ Atividade criada com sucesso!');
+          this.router.navigate(['/atividades']);
+        },
+        error: (erro) => {
+          console.error("❌ Falha ao salvar a atividade: " + erro)
+        }
       });
 
     }
