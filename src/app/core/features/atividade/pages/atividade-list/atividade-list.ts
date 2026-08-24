@@ -32,8 +32,14 @@ export class AtividadeList implements OnInit {
   }
 
   loadAtividades() {
-    this.atividadeService.buscarAtividades().subscribe(atividades => {
-      this.atividades.set(atividades);
+    this.atividadeService.buscarAtividades().subscribe({
+      next: (response) => {
+        console.log('✅ Atividades carregadas com sucesso!');
+        this.atividades.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar atividades: " + erro)
+      }
     })
   }
 
