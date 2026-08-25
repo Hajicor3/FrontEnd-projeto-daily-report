@@ -1,3 +1,4 @@
+import { LoadingService } from './../../../../services/loading.service';
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,16 +14,19 @@ import { EmpresaModel } from '../../models/empresa.model';
 })
 export class EmpresasList implements OnInit {
   empresaService: EmpresaService;
+  loadingService: LoadingService;
 
   empresas = signal<EmpresaModel[]>([]);
 
   termoBusca: string = '';
 
-  constructor(empresaService: EmpresaService) {
+  constructor(empresaService: EmpresaService, loadingService: LoadingService) {
     this.empresaService = empresaService;
+    this.loadingService = loadingService;
   }
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.loadEmpresas();
   }
 
@@ -31,9 +35,11 @@ export class EmpresasList implements OnInit {
       next: (response) => {
         console.log('✅ Empresas carregadas com sucesso!');
         this.empresas.set(response);
+        this.loadingService.hide();
       },
       error: (erro) => {
         console.error("❌ Falha ao carregar empresas: " + erro.message);
+        this.loadingService.hide();
       }
     });
   }
