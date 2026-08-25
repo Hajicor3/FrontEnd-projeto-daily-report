@@ -5,6 +5,7 @@ export class Atividade {
   data: string;
   titulo: string;
   descricao: string;
+  encarregado: string;
   empresaId: number;
   empresaNome: string;
   projeto: string;
@@ -21,6 +22,7 @@ export class Atividade {
     data: string,
     titulo: string,
     descricao: string,
+    encarregado: string,
     empresaId: number,
     empresaNome: string,
     projeto: string,
@@ -36,6 +38,7 @@ export class Atividade {
     this.data = data;
     this.titulo = titulo;
     this.descricao = descricao;
+    this.encarregado = encarregado;
     this.empresaId = empresaId;
     this.empresaNome = empresaNome;
     this.projeto = projeto;

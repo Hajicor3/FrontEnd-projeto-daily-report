@@ -92,6 +92,7 @@
         <tr>
           <th>Data</th>
           <th>Atividade</th>
+          <th>Encarregado</th>
           <th>Empresa</th>
           <th>Categoria</th>
           <th>Horário</th>
@@ -105,6 +106,7 @@
             <div class="atividade-titulo">{{ item.titulo }}</div>
             <div class="atividade-projeto">{{ item.projeto }}</div>
           </td>
+          <td>{{ item.encarregado }}</td>
           <td>{{ item.empresaNome }}</td>
           <td>
             <span class="badge" [ngClass]="corDaCategoria(item.categoria)">

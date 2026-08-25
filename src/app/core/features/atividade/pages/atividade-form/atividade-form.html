@@ -9,14 +9,19 @@
 
   <div class="form-card">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-      <div class="form-field" [class.invalid]="campoInvalido('titulo')">
-        <label for="titulo">Título *</label>
-        <input id="titulo" type="text" formControlName="titulo" placeholder="Ex: Implementação da tela de login" />
-        <span class="form-error" *ngIf="campoInvalido('titulo')">O título é obrigatório</span>
-      </div>
-
       <div class="form-row">
+        <div class="form-field" [class.invalid]="campoInvalido('titulo')">
+          <label for="titulo">Título *</label>
+          <input id="titulo" type="text" formControlName="titulo" placeholder="Ex: Implementação da tela de login" />
+          <span class="form-error" *ngIf="campoInvalido('titulo')">O título é obrigatório</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="campoInvalido('encarregado')">
+          <label for="encarregado">Encarregado *</label>
+          <input id="encarregado" type="text" formControlName="encarregado" placeholder="Nome do encarregado" />
+          <span class="form-error" *ngIf="campoInvalido('encarregado')">O encarregado é obrigatório</span>
+        </div>
+
         <div class="form-field" [class.invalid]="campoInvalido('data')">
           <label for="data">Data *</label>
           <input id="data" type="date" formControlName="data" />

@@ -28,6 +28,7 @@ export class AtividadeForm implements OnInit {
 
   form = new FormGroup({
     titulo: new FormControl('', { nonNullable: true, validators: Validators.required }),
+    encarregado: new FormControl('', { nonNullable: true, validators: Validators.required }),
     data: new FormControl('', { nonNullable: true, validators: Validators.required }),
     categoria: new FormControl<CategoriaAtividade | null>(null, Validators.required),
     empresaId: new FormControl<number | null>(null, Validators.required),
@@ -91,6 +92,7 @@ export class AtividadeForm implements OnInit {
   private preencherFormComAtividade(atividade: Atividade): void {
     this.form.patchValue({
       titulo: atividade.titulo,
+      encarregado: atividade.encarregado,
       data: this.formatarData(atividade.data),
       categoria: atividade.categoria,
       empresaId: atividade.empresaId,
@@ -134,6 +136,7 @@ export class AtividadeForm implements OnInit {
     const request: AtividadeRequest = {
       titulo: valores.titulo!,
       data: valores.data!,
+      encarregado: valores.encarregado,
       categoria: valores.categoria!,
       empresaId: valores.empresaId!,
       projeto: valores.projeto || undefined,
