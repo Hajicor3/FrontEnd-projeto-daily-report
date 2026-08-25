@@ -3,11 +3,12 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EmpresaModel } from '../features/empresas/models/empresa.model';
 import { EmpresaRequest } from '../features/empresas/models/empresa-request.model';
+import { API_BASE_URL } from '../config/api-config';
 
 
 @Injectable({ providedIn: 'root' })
 export class EmpresaService {
-  private readonly apiUrl = "http://localhost:8080/api/empresas";
+  private readonly apiUrl = `${API_BASE_URL}/api/empresas`;
   private readonly http = inject(HttpClient);
 
   buscarEmpresas(): Observable<EmpresaModel[]> {

@@ -5,10 +5,11 @@ import { CategoriaAtividade } from '../features/atividade/models/categoria-ativi
 import { AtividadeRequest } from '../features/atividade/models/atividade-request.model';
 import { Observable } from 'rxjs';
 import { FiltroAtividade } from '../features/atividade/models/filtro-atividade';
+import { API_BASE_URL } from '../config/api-config';
 
 @Injectable({ providedIn: 'root' })
 export class AtividadeService {
-  private readonly apiUrl: string = 'http://localhost:8080/api/atividades';
+  private readonly apiUrl: string = `${API_BASE_URL}/api/atividades`;
   private readonly http = inject(HttpClient);
 
   buscarAtividades(filtros?: FiltroAtividade): Observable<Atividade[]> {
