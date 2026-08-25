@@ -32,6 +32,7 @@ export class AtividadeList implements OnInit {
     data: null,
     empresaId: null,
     projeto: null,
+    encarregado: null,
     categoria: null,
     dataInicial: null,
     dataFinal: null,
@@ -97,6 +98,7 @@ export class AtividadeList implements OnInit {
       this.filtro.dataInicial = null;
       this.filtro.empresaId = null;
       this.filtro.projeto = null;
+      this.filtro.encarregado = null;
     }
   }
 

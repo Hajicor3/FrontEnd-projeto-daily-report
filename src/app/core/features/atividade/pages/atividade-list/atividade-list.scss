@@ -88,7 +88,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 14px;
-  width: 250px;
+  width: 200px;
 
   &:focus {
     outline: none;
@@ -98,7 +98,7 @@
 
 .filter-input-data {
   flex: 1;
-  width: 125px;
+  width: 110px;
   color: #333;
   text-align: center;
 }
@@ -109,7 +109,7 @@
   border-radius: 6px;
   font-size: 14px;
   background: white;
-  min-width: 225px;
+  width: 140px;
 }
 
 .list-card {

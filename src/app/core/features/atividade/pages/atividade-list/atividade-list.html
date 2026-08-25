@@ -18,6 +18,11 @@
       </div>
 
       <div class="filter-container">
+        <label for="projeto">Encarregado</label>
+        <input type="text" id="emcarregado" class="filter-input" placeholder="Nome do Encarregado" [(ngModel)]="filtro.encarregado">
+      </div>
+
+      <div class="filter-container">
         <label for="data">Data da atividade</label>
         <input
           type="date"

@@ -21,6 +21,7 @@ export class AtividadeService {
       if(filtros.dataInicial) params = params.set('dataInicial', filtros.dataInicial);
       if(filtros.projeto) params = params.set('projeto', filtros.projeto);
       if(filtros.empresaId) params = params.set('empresaId', filtros.empresaId);
+      if(filtros.encarregado) params = params.set('encarregado', filtros.encarregado);
     }
     return this.http.get<Atividade[]>(this.apiUrl, { params });
   }
