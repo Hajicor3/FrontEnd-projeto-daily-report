@@ -1,3 +1,4 @@
+import { LoadingService } from './../../../../services/loading.service';
 import { EmpresaService } from './../../../../services/empresa.service';
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -8,10 +9,9 @@ import { Atividade } from '../../models/atividade.model';
 import { CategoriaAtividade } from '../../models/categoria-atividade.enum';
 import { EmpresaModel } from '../../../empresas/models/empresa.model';
 import { FiltroAtividade } from '../../models/filtro-atividade';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-  imports: [CommonModule, DatePipe, FormsModule, RouterLink, MatProgressSpinner],
+  imports: [CommonModule, DatePipe, FormsModule, RouterLink],
   selector: 'app-atividade-list',
   styleUrl: './atividade-list.scss',
   templateUrl: './atividade-list.html',
@@ -19,6 +19,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class AtividadeList implements OnInit {
   atividadeService: AtividadeService;
   empresaService: EmpresaService;
+  loadingService:LoadingService;
   empresaSelecionada: any = null;
 
   atividades = signal<Atividade[]>([]);
@@ -38,9 +39,10 @@ export class AtividadeList implements OnInit {
 
   categorias = Object.values(CategoriaAtividade);
 
-  constructor(atividadeService: AtividadeService, empresaService: EmpresaService) {
+  constructor(atividadeService: AtividadeService, empresaService: EmpresaService, loadingService:LoadingService) {
     this.atividadeService = atividadeService;
     this.empresaService = empresaService;
+    this.loadingService = loadingService;
   }
 
   ngOnInit(): void {
@@ -54,11 +56,13 @@ export class AtividadeList implements OnInit {
         this.atividades.set(response);
         this.firstLoad.set(true);
         this.loading.set(false);
+        this.loadingService.hide();
       },
       error: (erro) => {
         console.error("❌ Falha ao carregar atividades: " + erro.message)
         this.firstLoad.set(true);
         this.loading.set(false);
+        this.loadingService.hide();
       }
     })
   }
@@ -77,6 +81,7 @@ export class AtividadeList implements OnInit {
 
   buscarAtividadesPorFiltro(){
     this.loading.set(true);
+    this.loadingService.show();
     this.loadAtividades(this.filtro);
   }
 
