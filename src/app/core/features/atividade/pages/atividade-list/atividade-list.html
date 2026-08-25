@@ -92,37 +92,41 @@
   </div>
 
   <div class="list-card" *ngIf="!loading()">
-    <table class="atividade-table" *ngIf="atividadesLength > 0; else vazio">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Atividade</th>
-          <th>Encarregado</th>
-          <th>Empresa</th>
-          <th>Categoria</th>
-          <th>Horário</th>
-          <th>Duração</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of atividades()" class="clickable-row" [routerLink]="['/atividade', item.id]">
-          <td>{{ item.data | date:'dd/MM/yyyy' }}</td>
-          <td>
-            <div class="atividade-titulo">{{ item.titulo }}</div>
-            <div class="atividade-projeto">{{ item.projeto }}</div>
-          </td>
-          <td>{{ item.encarregado }}</td>
-          <td>{{ item.empresaNome }}</td>
-          <td>
-            <span class="badge" [ngClass]="corDaCategoria(item.categoria)">
-              {{ item.categoria }}
-            </span>
-          </td>
-          <td>{{ item.horaInicio | slice:0:5 }} - {{ item.horaFim | slice:0:5 }}</td>
-          <td>{{ item.minutosTrabalhados }} min</td>
-        </tr>
-      </tbody>
-    </table>
+    <ng-container *ngIf="atividadesLength > 0; else vazio">
+      <div class="table-responsive">
+        <table class="atividade-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Atividade</th>
+              <th>Encarregado</th>
+              <th>Empresa</th>
+              <th>Categoria</th>
+              <th>Horário</th>
+              <th>Duração</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of atividades()" class="clickable-row" [routerLink]="['/atividade', item.id]">
+              <td>{{ item.data | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <div class="atividade-titulo">{{ item.titulo }}</div>
+                <div class="atividade-projeto">{{ item.projeto }}</div>
+              </td>
+              <td>{{ item.encarregado }}</td>
+              <td>{{ item.empresaNome }}</td>
+              <td>
+                <span class="badge" [ngClass]="corDaCategoria(item.categoria)">
+                  {{ item.categoria }}
+                </span>
+              </td>
+              <td>{{ item.horaInicio | slice:0:5 }} - {{ item.horaFim | slice:0:5 }}</td>
+              <td>{{ item.minutosTrabalhados }} min</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
 
     <ng-template #vazio>
       <div class="empty-state" *ngIf="firstLoad()">

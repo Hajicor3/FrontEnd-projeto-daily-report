@@ -138,3 +138,42 @@
   gap: 12px;
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  .atividade-main-container {
+    margin-left: 0;
+    padding: 80px 16px 24px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .page-header .btn-secondary {
+    text-align: center;
+  }
+
+  .form-card {
+    padding: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .form-actions .btn,
+  .form-actions .btn-secondary,
+  .form-actions .btn-danger {
+    width: 100%;
+    text-align: center;
+  }
+}
