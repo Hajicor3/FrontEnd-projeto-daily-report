@@ -3,6 +3,7 @@
   height: 100vh;
   padding: 30px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .dashboard-header-container {
@@ -40,4 +41,23 @@
 .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 80px 16px 24px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .dashboard-header-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .dashboard-header-container .btn {
+    width: 100%;
+  }
 }

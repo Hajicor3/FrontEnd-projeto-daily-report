@@ -20,26 +20,30 @@
   </div>
 
   <div class="list-card">
-    <table class="empresa-table" *ngIf="empresasFiltradas.length > 0; else vazio">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Descrição</th>
-          <th>Criado em</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let item of empresasFiltradas"
-          class="clickable-row"
-          [routerLink]="['/empresa', item.id]"
-        >
-          <td class="empresa-nome">{{ item.nome }}</td>
-          <td>{{ item.descricao }}</td>
-          <td>{{ item.criadoEm | date:'dd/MM/yyyy' }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <ng-container *ngIf="empresasFiltradas.length > 0; else vazio">
+      <div class="table-responsive">
+        <table class="empresa-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Criado em</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of empresasFiltradas"
+              class="clickable-row"
+              [routerLink]="['/empresa', item.id]"
+            >
+              <td class="empresa-nome">{{ item.nome }}</td>
+              <td>{{ item.descricao }}</td>
+              <td>{{ item.criadoEm | date:'dd/MM/yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
 
     <ng-template #vazio>
       <div class="empty-state">

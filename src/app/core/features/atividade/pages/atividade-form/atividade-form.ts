@@ -28,6 +28,7 @@ export class AtividadeForm implements OnInit {
 
   form = new FormGroup({
     titulo: new FormControl('', { nonNullable: true, validators: Validators.required }),
+    encarregado: new FormControl('', { nonNullable: true, validators: Validators.required }),
     data: new FormControl('', { nonNullable: true, validators: Validators.required }),
     categoria: new FormControl<CategoriaAtividade | null>(null, Validators.required),
     empresaId: new FormControl<number | null>(null, Validators.required),
@@ -63,15 +64,27 @@ export class AtividadeForm implements OnInit {
   }
 
   loadEmpresas() {
-    this.empresaService.buscarEmpresas().subscribe(response => {
-      this.empresas.set(response);
+    this.empresaService.buscarEmpresas().subscribe({
+      next: (response) =>{
+        console.log('✅ Empresas carregadas com sucesso!');
+        this.empresas.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar empresas: " + erro.message)
+      }
     });
   }
 
   loadAtividadeData(id: number) {
-    this.atividadeService.buscarAtividadePorId(id).subscribe(atividade => {
-      if (atividade != null) {
-        this.preencherFormComAtividade(atividade);
+    this.atividadeService.buscarAtividadePorId(id).subscribe({
+      next: (response) => {
+        if (response != null) {
+          this.preencherFormComAtividade(response);
+        }
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar atividade no id: "+ id);
+        console.error("Erro: " + erro.message);
       }
     });
   }
@@ -79,6 +92,7 @@ export class AtividadeForm implements OnInit {
   private preencherFormComAtividade(atividade: Atividade): void {
     this.form.patchValue({
       titulo: atividade.titulo,
+      encarregado: atividade.encarregado,
       data: this.formatarData(atividade.data),
       categoria: atividade.categoria,
       empresaId: atividade.empresaId,
@@ -122,6 +136,7 @@ export class AtividadeForm implements OnInit {
     const request: AtividadeRequest = {
       titulo: valores.titulo!,
       data: valores.data!,
+      encarregado: valores.encarregado,
       categoria: valores.categoria!,
       empresaId: valores.empresaId!,
       projeto: valores.projeto || undefined,
@@ -132,15 +147,40 @@ export class AtividadeForm implements OnInit {
     };
 
     if (this.atividadeId) {
-      this.atividadeService.atualizarAtividade(this.atividadeId, request).subscribe(response => {
-        this.router.navigate(['/atividade', this.atividadeId]);
+      this.atividadeService.atualizarAtividade(this.atividadeId, request).subscribe({
+        next: (response) => {
+          console.log('✅ Atividade atualizada com sucesso!');
+          this.router.navigate(['/atividade', this.atividadeId]);
+        },
+        error: (erro) => {
+          console.error("❌ Falha ao atualizar a atividade: " + erro.message);
+        }
       });
 
     } else {
-      this.atividadeService.criarAtividade(request).subscribe(response => {
-        this.router.navigate(['/atividades']);
+      this.atividadeService.criarAtividade(request).subscribe({
+        next: (response) => {
+          console.log('✅ Atividade criada com sucesso!');
+          this.router.navigate(['/atividades']);
+        },
+        error: (erro) => {
+          console.error("❌ Falha ao salvar a atividade: " + erro.message);
+        }
       });
-
     }
+  }
+
+  deletarAtividade(id: number){
+    this.atividadeService.deletarAtividade(id).subscribe({
+      next: () => {
+        console.log('✅ Atividade deletada com sucesso!');
+        this.router.navigate(['/atividades'])
+
+      },
+      error: (erro) => {
+        console.error('❌ Erro ao deletar atividade:', erro.message);
+
+      }
+    })
   }
 }

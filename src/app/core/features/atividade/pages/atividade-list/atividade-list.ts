@@ -1,3 +1,5 @@
+import { LoadingService } from './../../../../services/loading.service';
+import { EmpresaService } from './../../../../services/empresa.service';
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -5,6 +7,8 @@ import { RouterLink } from '@angular/router';
 import { AtividadeService } from '../../../../services/atividade.service';
 import { Atividade } from '../../models/atividade.model';
 import { CategoriaAtividade } from '../../models/categoria-atividade.enum';
+import { EmpresaModel } from '../../../empresas/models/empresa.model';
+import { FiltroAtividade } from '../../models/filtro-atividade';
 
 @Component({
   imports: [CommonModule, DatePipe, FormsModule, RouterLink],
@@ -14,68 +18,88 @@ import { CategoriaAtividade } from '../../models/categoria-atividade.enum';
 })
 export class AtividadeList implements OnInit {
   atividadeService: AtividadeService;
+  empresaService: EmpresaService;
+  loadingService:LoadingService;
+  empresaSelecionada: any = null;
 
   atividades = signal<Atividade[]>([]);
+  empresas = signal<EmpresaModel[]>([]);
 
-  termoBusca: string = '';
-  filtroData: Date | null = null;
-  categoriaSelecionada: CategoriaAtividade | 'TODAS' = 'TODAS';
+  firstLoad = signal<boolean>(false);
+  loading = signal<boolean>(false);
+
+  filtro: FiltroAtividade = {
+    data: null,
+    empresaId: null,
+    projeto: null,
+    encarregado: null,
+    categoria: null,
+    dataInicial: null,
+    dataFinal: null,
+  };
 
   categorias = Object.values(CategoriaAtividade);
 
-  constructor(atividadeService: AtividadeService) {
+  constructor(atividadeService: AtividadeService, empresaService: EmpresaService, loadingService:LoadingService) {
     this.atividadeService = atividadeService;
+    this.empresaService = empresaService;
+    this.loadingService = loadingService;
   }
 
   ngOnInit(): void {
-    this.loadAtividades();
+    this.loadEmpresas();
   }
 
-  loadAtividades() {
-    this.atividadeService.buscarAtividades().subscribe(atividades => {
-      this.atividades.set(atividades);
+  loadAtividades(filtro: FiltroAtividade) {
+    this.atividadeService.buscarAtividades(filtro).subscribe({
+      next: (response) => {
+        console.log('✅ Atividades carregadas com sucesso!');
+        this.atividades.set(response);
+        this.firstLoad.set(true);
+        this.loading.set(false);
+        this.loadingService.hide();
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar atividades: " + erro.message)
+        this.firstLoad.set(true);
+        this.loading.set(false);
+        this.loadingService.hide();
+      }
     })
   }
 
-  // O <input type="date"> nativo só fala string "yyyy-MM-dd" (tanto pra
-  // exibir quanto pra emitir mudanças). Esse getter/setter é a ponte entre
-  // essa string e o "filtroData" tipado como Date de verdade: o getter
-  // formata o Date pra string usando os componentes locais (getFullYear/
-  // getMonth/getDate), e o setter faz o caminho inverso construindo o Date
-  // a partir de ano/mês/dia (em vez de "new Date(valor)"), evitando o mesmo
-  // problema de fuso horário (meia-noite UTC) que já resolvemos antes.
-  get filtroDataInput(): string {
-    if (!this.filtroData) return '';
-
-    const ano = this.filtroData.getFullYear();
-    const mes = String(this.filtroData.getMonth() + 1).padStart(2, '0');
-    const dia = String(this.filtroData.getDate()).padStart(2, '0');
-
-    return `${ano}-${mes}-${dia}`;
+  loadEmpresas() {
+    this.empresaService.buscarEmpresas().subscribe({
+      next: (response) => {
+        console.log('✅ Empresas carregadas com sucesso!');
+        this.empresas.set(response);
+      },
+      error: (erro) => {
+        console.error("❌ Falha ao carregar ampresas: " + erro.message)
+      }
+    });
   }
 
-  set filtroDataInput(valor: string) {
-    if (!valor) {
-      this.filtroData = null;
-      return;
+  buscarAtividadesPorFiltro(){
+    this.loading.set(true);
+    this.loadingService.show();
+    this.loadAtividades(this.filtro);
+  }
+
+  get atividadesLength() {
+    return this.atividades().length;
+  }
+
+  limparFiltros() {
+    if(this.filtro){
+      this.filtro.categoria = null;
+      this.filtro.data = null;
+      this.filtro.dataFinal = null;
+      this.filtro.dataInicial = null;
+      this.filtro.empresaId = null;
+      this.filtro.projeto = null;
+      this.filtro.encarregado = null;
     }
-
-    const [ano, mes, dia] = valor.split('-').map(Number);
-    this.filtroData = new Date(ano, mes - 1, dia);
-  }
-
-  get atividadesFiltradas(): Atividade[] {
-    const termo = this.termoBusca.toLowerCase().trim();
-
-    // "data" é uma string yyyy-MM-dd. Comparamos com "filtroDataInput" (que
-    // já é a mesma string formatada a partir do Date) em vez de comparar
-    // objetos Date entre si, mantendo a mesma abordagem de string usada no
-    // resto do componente.
-    return this.atividades()
-      .filter(a => this.categoriaSelecionada === 'TODAS' || a.categoria === this.categoriaSelecionada)
-      .filter(a => a.titulo.toLowerCase().includes(termo))
-      .filter(a => !this.filtroData || a.data === this.filtroDataInput)
-      .sort((a, b) => b.data.localeCompare(a.data));
   }
 
   corDaCategoria(categoria: CategoriaAtividade): string {

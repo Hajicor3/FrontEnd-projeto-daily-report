@@ -1,25 +1,37 @@
-<aside class="sidebar">
+<button
+  type="button"
+  class="menu-toggle"
+  [class.active]="isOpen()"
+  (click)="toggleSidebar()"
+  aria-label="Abrir menu"
+>
+  <mat-icon class="material-symbols-outlined">{{ isOpen() ? 'close' : 'menu' }}</mat-icon>
+</button>
+
+<div class="sidebar-backdrop" *ngIf="isOpen()" (click)="closeSidebar()"></div>
+
+<aside class="sidebar" [class.open]="isOpen()">
   <div class="sidebar-header">
     <mat-icon style="font-size: 28px;" class="material-symbols-outlined">event_available</mat-icon>
     <span class="app-name">Report Diário</span>
   </div>
   <ul class="sidebar-menu">
     <li class="sidebar-item">
-      <a href="/dashboard">
+      <a href="/dashboard" (click)="closeSidebar()">
         <mat-icon class="material-symbols-outlined">leaderboard</mat-icon>
         <span>DashBoard</span>
       </a>
     </li>
 
     <li class="sidebar-item">
-      <a href="/atividades">
+      <a href="/atividades" (click)="closeSidebar()">
         <mat-icon class="material-symbols-outlined">work_history</mat-icon>
         <span>Atividades</span>
       </a>
     </li>
 
     <li class="sidebar-item">
-      <a href="/empresas">
+      <a href="/empresas" (click)="closeSidebar()">
         <mat-icon class="material-symbols-outlined">corporate_fare</mat-icon>
         <span>empresas</span>
       </a>

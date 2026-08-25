@@ -8,6 +8,7 @@ export interface AtividadeRequest {
   data: string; // LocalDate no backend -> string "yyyy-MM-dd" (formato que <input type="date"> já produz)
   titulo: string;
   descricao?: string;
+  encarregado: string;
   empresaId: number; // Long no backend -> number no TypeScript
   projeto?: string;
   categoria: CategoriaAtividade;
